@@ -100,7 +100,7 @@ export default function AuthForm() {
       {/* Left Side - Logo Section */}
       <div className="flex-1 flex items-center justify-center relative z-10 py-8 lg:py-0">
         <div className="text-center">
-          {/* Logo Background Placeholder */}
+          {/* Logo Background */}
           <div className="relative mb-8">
             <div className="w-64 h-56 sm:w-72 sm:h-64 md:w-80 md:h-72 relative">
               <Image
@@ -117,10 +117,10 @@ export default function AuthForm() {
                   <Image
                     src="/images/logo.png"
                     alt="Logo"
-                    width={128}
-                    height={128}
+                    width={150}
+                    height={1150}
                     className="object-contain"
-                    sizes="(max-width: 640px) 96px, 128px"
+                    sizes="(max-width: 640px) 96px, 164px"
                   />
                 </div>
               </div>
@@ -131,7 +131,7 @@ export default function AuthForm() {
 
       {/* Right Side - Form Section */}
       <div className="flex-1 flex items-center justify-center relative z-10 p-4 sm:p-8">
-        {/* Curved Background Shape */}
+        {/* Background Shape */}
         <div className="absolute inset-y-0 left-0 w-full h-full">
           <Image
             src="/images/bg-form.png"
@@ -145,10 +145,10 @@ export default function AuthForm() {
         <div className="relative z-20 w-full max-w-md p-6 sm:p-8 rounded-xl ">
           {/* Welcome Text */}
           <div className="text-center mb-6 sm:mb-8">
-            <h1 className="font-[var(--font-primary)] font-bold text-xl sm:text-2xl text-gray-800 mb-1 sm:mb-2">
+            <h1 className="font-monserrat font-bold text-xl sm:text-2xl text-gray-800 mb-1 sm:mb-2">
               Welcome to
             </h1>
-            <h2 className="font-[var(--font-script)] text-3xl sm:text-4xl text-[var(--button-ungu)] mb-6 sm:mb-8">
+            <h2 className="font-script font-bold text-3xl sm:text-4xl text-b-ungu mb-6 sm:mb-8">
               CalmMe
             </h2>
 
@@ -158,8 +158,8 @@ export default function AuthForm() {
                 onClick={() => setIsLogin(true)}
                 className={`flex-1 py-3 px-6 rounded-full text-sm font-medium transition-all ${
                   isLogin
-                    ? "bg-[var(--button-ungu)] text-white shadow-lg"
-                    : "text-[var(--button-ungu)] hover:text-[var(--hover-ungu)] "
+                    ? "bg-b-ungu text-white shadow-lg"
+                    : "text-b-ungu hover:text-h-ungu "
                 }`}
               >
                 Log in
@@ -168,8 +168,8 @@ export default function AuthForm() {
                 onClick={() => setIsLogin(false)}
                 className={`flex-1 py-3 px-6 rounded-full text-sm font-medium transition-all ${
                   !isLogin
-                    ? "bg-[var(--button-ungu)] text-white shadow-lg"
-                    : "text-[var(--button-ungu)] hover:text-[var(--hover-ungu)]"
+                    ? "bg-b-ungu text-white shadow-lg"
+                    : "text-b-ungu hover:text-h-ungu"
                 }`}
               >
                 Register
@@ -302,7 +302,7 @@ export default function AuthForm() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-[var(--button-ungu)] hover:bg-[var(--hover-ungu)] text-white py-4 rounded-2xl font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                className="w-full bg-b-ungu hover:bg-h-ungu text-white py-4 rounded-2xl font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
               >
                 {loading ? (
                   <div className="flex items-center justify-center">

@@ -1,59 +1,61 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../hooks/useAuth";
-import { signOut } from "firebase/auth";
-import { auth } from "../../lib/firebase";
+import { authService } from "../../services/auth";
+import ProtectedRoute from "../../components/ProtectedRoute";
+import Sidebar from "../../components/Sidebar";
+import HomeContent from "../../components/HomeContent";
 
 export default function HomePage() {
   const { user, loading } = useAuth();
   const router = useRouter();
+  const [userData, setUserData] = useState(null);
+  const [loadingUserData, setLoadingUserData] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // Redirect jika tidak login
   useEffect(() => {
     if (!loading && !user) {
       router.replace("/auth");
     }
   }, [user, loading, router]);
 
-  const handleSignOut = async () => {
-    try {
-      await signOut(auth);
-      router.replace("/auth");
-    } catch (error) {
-      console.error("Error signing out:", error);
-    }
-  };
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (user) {
+        try {
+          const data = await authService.getCurrentUserData();
+          setUserData(data);
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        } finally {
+          setLoadingUserData(false);
+        }
+      }
+    };
 
-  // Loading state
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        Loading...
-      </div>
-    );
-  }
+    fetchUserData();
+  }, [user]);
 
-  // Tidak login
-  if (!user) return null;
-
-  // Content untuk user yang sudah login
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
-      <div className="max-w-4xl mx-auto">
-        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-          <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold">Welcome to CalmMe</h1>
-            <button
-              onClick={handleSignOut}
-              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-            >
-              Sign Out
-            </button>
-          </div>
-          <p className="text-gray-600 mt-2">Email: {user.email}</p>
+    <ProtectedRoute>
+      <div className="flex h-screen bg-gray-50">
+        {/* Sidebar */}
+        <Sidebar
+          isOpen={sidebarOpen}
+          onClose={() => setSidebarOpen(false)}
+          userData={userData}
+        />
+
+        {/* Main Content */}
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <HomeContent
+            userData={userData}
+            loadingUserData={loadingUserData}
+            onMenuClick={() => setSidebarOpen(true)}
+          />
         </div>
       </div>
-    </div>
+    </ProtectedRoute>
   );
 }
