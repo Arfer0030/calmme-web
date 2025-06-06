@@ -17,7 +17,7 @@ export default function HomePage() {
     }
   }, [user, loading, router]);
 
-  // Show loading while checking auth
+  // loading state
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-100 via-white to-purple-200">

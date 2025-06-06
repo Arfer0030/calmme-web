@@ -5,6 +5,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { authService } from "../../services/auth";
 import { moodService } from "../../services/mood";
 import Sidebar from "../../components/Sidebar";
+import TopBar from "../../components/TopBar"; 
 
 export default function DailyMoodPage() {
   const router = useRouter();
@@ -16,6 +17,51 @@ export default function DailyMoodPage() {
   const [moodStats, setMoodStats] = useState([]);
   const [selectedPeriod, setSelectedPeriod] = useState("Week");
   const [loadingData, setLoadingData] = useState(true);
+
+  // Pilihan mood yang tersedia
+  const allMoods = [
+    {
+      id: "calm",
+      label: "Calm",
+      icon: "/images/mood/md_calm.png",
+    },
+    {
+      id: "happy",
+      label: "Happy",
+      icon: "/images/mood/md_happy.png",
+    },
+    {
+      id: "disappointed",
+      label: "Disapp",
+      icon: "/images/mood/md_diss.png",
+    },
+    {
+      id: "frustrated",
+      label: "Frust",
+      icon: "/images/mood/md_frustrated.png",
+    },
+    {
+      id: "surprised",
+      label: "Surprised",
+      icon: "/images/mood/md_surprised.png",
+    },
+    { id: "sad", label: "Sad", emoji: "😢", icon: "/images/mood/md_sad.png" },
+    {
+      id: "bored",
+      label: "Bored",
+      icon: "/images/mood/md_bored.png",
+    },
+    {
+      id: "worried",
+      label: "Worried",
+      icon: "/images/mood/md_worried.png",
+    },
+    {
+      id: "angry",
+      label: "Angry",
+      icon: "/images/mood/md_angry.png",
+    },
+  ];
 
   useEffect(() => {
     if (!loading && !user) {
@@ -49,17 +95,34 @@ export default function DailyMoodPage() {
             setStreak(streakResult.streak);
           }
 
-          // Get last 7 days
+          // Get 7 hari terakhir
           const last7DaysResult = await moodService.getLast7DaysMood(user.uid);
           if (last7DaysResult.success) {
             setLast7Days(last7DaysResult.data);
           }
 
-          // Get mood stats
+          // Get mood stats 
           const period = selectedPeriod.toLowerCase();
           const statsResult = await moodService.getMoodStats(user.uid, period);
           if (statsResult.success) {
-            setMoodStats(statsResult.data);
+            const completeMoodStats = allMoods.map((mood) => {
+              const existingStat = statsResult.data.find(
+                (stat) => stat.mood === mood.label.toLowerCase()
+              );
+              return {
+                ...mood,
+                count: existingStat ? existingStat.count : 0,
+                percentage: existingStat ? existingStat.percentage : 0,
+              };
+            });
+            setMoodStats(completeMoodStats);
+          } else {
+            const emptyStats = allMoods.map((mood) => ({
+              ...mood,
+              count: 0,
+              percentage: 0,
+            }));
+            setMoodStats(emptyStats);
           }
         } catch (error) {
           console.error("Error fetching mood data:", error);
@@ -76,17 +139,6 @@ export default function DailyMoodPage() {
     router.push("/home");
   };
 
-  const moodIcons = {
-    calm: "/images/mood/md_calm.png",
-    happy: "/images/mood/md_happy.png",
-    disappointed: "/images/mood/md_diss.png",
-    frustrated: "/images/mood/md_frustrated.png",
-    surprised: "/images/mood/md_surprised.png",
-    sad: "/images/mood/md_sad.png",
-    bored: "/images/mood/md_bored.png",
-    worried: "/images/mood/md_worried.png",
-  };
-
   const moodColors = {
     calm: "bg-blue-200",
     happy: "bg-yellow-200",
@@ -96,6 +148,7 @@ export default function DailyMoodPage() {
     sad: "bg-gray-200",
     bored: "bg-green-200",
     worried: "bg-pink-200",
+    excited: "bg-indigo-200",
   };
 
   if (loading) {
@@ -112,7 +165,7 @@ export default function DailyMoodPage() {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-purple-100 flex">
+    <div className="min-h-screen bg-gradient-to-b from-purple-200 via-gray-50 to-purple-200 flex">
       {/* Sidebar */}
       <Sidebar
         isOpen={sidebarOpen}
@@ -123,41 +176,19 @@ export default function DailyMoodPage() {
       {/* Main Content */}
       <div className="flex-1 p-6">
         {/* Top Bar */}
-        <div className="flex items-center justify-center mb-8 relative">
-          <button
-            onClick={() => setSidebarOpen(true)}
-            className="lg:hidden absolute left-0 p-2 hover:bg-white/50 rounded-lg transition-colors"
-          >
-            <svg
-              className="w-6 h-6 text-gray-700"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
-          </button>
+        <TopBar
+          onMenuClick={() => setSidebarOpen(true)}
+          onBackClick={handleBack}
+          title="Daily Mood Tracker" 
+        />
 
-          <div className="bg-purple-200 px-8 py-3 rounded-full">
-            <h1 className="text-xl font-bold text-gray-800">
-              Daily Mood Tracker
-            </h1>
-          </div>
-        </div>
-
-        {/* Content */}
         <div className="max-w-4xl mx-auto space-y-8">
-          {/* Mood Section */}
+          {/* Bagian Mood */}
           <div className="bg-white rounded-3xl p-6 shadow-lg">
             <h2 className="text-2xl font-bold text-gray-800 mb-2">Mood</h2>
             <p className="text-lg text-gray-600 mb-6">{streak} Day Streak</p>
 
-            {/* Last 7 Days */}
+            {/* Bagian streak */}
             <div className="grid grid-cols-7 gap-4">
               {last7Days.map((day, index) => (
                 <div key={index} className="text-center">
@@ -178,7 +209,12 @@ export default function DailyMoodPage() {
                     {day.mood ? (
                       <>
                         <img
-                          src={moodIcons[day.mood.moodId] || ""}
+                          src={
+                            day.mood.moodId
+                              ? allMoods.find((m) => m.id === day.mood.moodId)
+                                  ?.icon || ""
+                              : ""
+                          }
                           alt={day.mood.moodLabel}
                           className="w-8 h-8 mb-1"
                         />
@@ -195,23 +231,23 @@ export default function DailyMoodPage() {
             </div>
           </div>
 
-          {/* Mood Chart Section */}
+          {/* Mood Chart */}
           <div className="bg-white rounded-3xl p-6 shadow-lg">
             <h2 className="text-2xl font-bold text-gray-800 mb-6">
               Mood Chart
             </h2>
 
-            {/* Period Selector */}
-            <div className="flex justify-center mb-8">
-              <div className="bg-purple-100 rounded-full p-1 flex">
+            {/* Pilihan Range Waktu */}
+            <div className="flex justify-center mb-8 px-4">
+              <div className="w-full max-w-md bg-tab-ungu rounded-full p-1 flex">
                 {["Week", "Month", "Year"].map((period) => (
                   <button
                     key={period}
                     onClick={() => setSelectedPeriod(period)}
-                    className={`px-6 py-2 rounded-full font-medium transition-all ${
+                    className={`flex-1 text-center px-6 py-2 rounded-full font-medium transition-all ${
                       selectedPeriod === period
-                        ? "bg-purple-500 text-white shadow-md"
-                        : "text-purple-600 hover:bg-purple-200"
+                        ? "bg-b-ungu text-white shadow-md"
+                        : "text-h-ungu"
                     }`}
                   >
                     {period}
@@ -220,9 +256,11 @@ export default function DailyMoodPage() {
               </div>
             </div>
 
-            {/* Weekly Average Label */}
+            {/* Label sesuai pilihan range waktu */}
             <h3 className="text-lg font-semibold text-gray-800 mb-6">
-              Weekly Average
+              {selectedPeriod === "Week" && "Weekly Average"}
+              {selectedPeriod === "Month" && "Monthly Average"}
+              {selectedPeriod === "Year" && "Yearly Average"}
             </h3>
 
             {/* Chart */}
@@ -232,52 +270,43 @@ export default function DailyMoodPage() {
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600 mx-auto"></div>
                 </div>
               ) : (
-                <div className="flex items-end justify-center space-x-4 h-64">
-                  {moodStats.length > 0
-                    ? moodStats.map((stat, index) => (
-                        <div key={index} className="flex flex-col items-center">
-                          {/* Percentage Label */}
-                          <div className="text-sm text-gray-600 mb-2">
-                            {stat.percentage}%
-                          </div>
+                <div className="flex items-end justify-center space-x-6 h-64">
+                  {moodStats.map((mood, index) => (
+                    <div key={index} className="flex flex-col items-center">
+                      {/* Label persentase */}
+                      <div className="text-sm text-gray-600 mb-2 h-6">
+                        {mood.percentage > 0 ? `${mood.percentage}%` : ""}
+                      </div>
 
-                          {/* Bar */}
-                          <div
-                            className={`w-12 ${
-                              moodColors[stat.mood] || "bg-gray-200"
-                            } rounded-t-lg flex flex-col justify-end items-center relative`}
-                            style={{
-                              height: `${Math.max(stat.percentage * 2, 20)}px`,
-                            }}
-                          >
-                            {/* Mood sections within bar */}
-                            <div className="w-full h-full flex flex-col justify-end">
-                              <div className="bg-blue-200 h-1/3 w-full"></div>
-                              <div className="bg-yellow-200 h-1/2 w-full"></div>
-                              <div className="bg-purple-200 h-1/4 w-full rounded-t-lg"></div>
-                            </div>
-                          </div>
+                      {/* Bar */}
+                      <div
+                        className="w-8 bg-purple-400 rounded-t-lg flex flex-col justify-end items-center relative transition-all duration-500"
+                        style={{
+                          height: `${Math.max(mood.percentage * 1.8, 8)}px`,
+                          minHeight: "8px",
+                        }}
+                      >
+                        {/* Bar kosong */}
+                        {mood.percentage === 0 && (
+                          <div className="w-full h-full bg-gray-200 rounded-t-lg"></div>
+                        )}
+                      </div>
 
-                          {/* Mood Icon */}
-                          <div className="mt-2">
-                            <img
-                              src={moodIcons[stat.mood] || ""}
-                              alt={stat.mood}
-                              className="w-8 h-8"
-                            />
-                          </div>
-                        </div>
-                      ))
-                    : // Empty state with placeholder bars
-                      Array.from({ length: 9 }).map((_, index) => (
-                        <div key={index} className="flex flex-col items-center">
-                          <div className="text-sm text-gray-400 mb-2">0%</div>
-                          <div className="w-12 h-20 bg-gray-100 rounded-t-lg"></div>
-                          <div className="mt-2">
-                            <div className="w-8 h-8 bg-gray-200 rounded-full"></div>
-                          </div>
-                        </div>
-                      ))}
+                      {/* Icon mod */}
+                      <div className="mt-2">
+                        <img
+                          src={mood.icon || ""}
+                          alt={mood.label}
+                          className="w-6 h-6"
+                        />
+                      </div>
+
+                      {/* Label mood */}
+                      <div className="text-xs text-gray-600 mt-1 text-center max-w-12">
+                        {mood.label}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
@@ -285,20 +314,20 @@ export default function DailyMoodPage() {
             {/* Date Range */}
             <div className="text-center mt-6">
               <span className="text-sm text-gray-500">
-                {selectedPeriod === "Week" && "May 18, 25 - Apr 18, 25"}
+                {selectedPeriod === "Week" && "Last 7 days"}
                 {selectedPeriod === "Month" && "Last 30 days"}
                 {selectedPeriod === "Year" && "Last 365 days"}
               </span>
             </div>
           </div>
 
-          {/* Motivational Message */}
-          <div className="bg-purple-200 rounded-3xl p-6 text-center">
+          {/* Teks mmotivasi */}
+          <div className="bg-purple-300 rounded-3xl p-6 text-center">
             <p className="text-lg font-medium text-purple-800 italic">
               "IT'S OKAY IF YOU..."
             </p>
             <p className="text-sm text-purple-600 mt-1">
-              Can't know what to do next
+              Don't know what to do next
             </p>
           </div>
         </div>

@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "../../../hooks/useAuth";
 import { authService } from "../../../services/auth";
 import Sidebar from "../../../components/Sidebar";
+import TopBar from "../../../components/TopBar"; 
 
 export default function AssessmentTestPage() {
   const router = useRouter();
@@ -105,51 +106,11 @@ export default function AssessmentTestPage() {
       {/* Main Content */}
       <div className="flex-1 p-6">
         {/* Top Bar */}
-        <div className="flex items-center mb-8">
-          <button
-            onClick={() => setSidebarOpen(true)}
-            className="lg:hidden p-2 hover:bg-white/50 rounded-lg transition-colors mr-4"
-          >
-            <svg
-              className="w-6 h-6 text-gray-700"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
-          </button>
-
-          <button
-            onClick={handleBack}
-            className="p-2 hover:bg-white/50 rounded-lg transition-colors mr-4"
-          >
-            <svg
-              className="w-6 h-6 text-gray-700"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
-          </button>
-
-          <div className="bg-white/80 backdrop-blur-sm px-6 py-2 rounded-full">
-            <h1 className="text-lg font-semibold text-gray-800">
-              Self-Assessment Test
-            </h1>
-          </div>
-        </div>
+        <TopBar
+          onMenuClick={() => setSidebarOpen(true)}
+          onBackClick={handleBack}
+          title="Self-Assessment Test"
+        />
 
         {/* Progress Bar */}
         <div className="max-w-4xl mx-auto mb-8">
@@ -190,8 +151,6 @@ export default function AssessmentTestPage() {
                 ))}
               </div>
             </div>
-
-            
 
             {/* Navigation */}
             <div className="flex justify-between pt-6">

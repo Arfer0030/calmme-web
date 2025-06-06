@@ -5,6 +5,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { authService } from "../../services/auth";
 import Sidebar from "../../components/Sidebar";
 import Image from "next/image";
+import TopBar from "../../components/TopBar"; 
 
 export default function AssessmentIntroPage() {
   const router = useRouter();
@@ -66,76 +67,36 @@ export default function AssessmentIntroPage() {
       {/* Main Content */}
       <div className="flex-1 p-6">
         {/* Top Bar */}
-        <div className="flex items-center mb-8">
-          <button
-            onClick={() => setSidebarOpen(true)}
-            className="lg:hidden p-2 hover:bg-white/50 rounded-lg transition-colors mr-4"
-          >
-            <svg
-              className="w-6 h-6 text-gray-700"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
-          </button>
+        <TopBar
+          onMenuClick={() => setSidebarOpen(true)}
+          onBackClick={handleBack}
+          title="Self-Assessment Test"
+        />
 
-          <button
-            onClick={handleBack}
-            className="p-2 hover:bg-white/50 rounded-lg transition-colors mr-4"
-          >
-            <svg
-              className="w-6 h-6 text-gray-700"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
-          </button>
-
-          <div className="bg-white/80 backdrop-blur-sm px-6 py-2 rounded-full">
-            <h1 className="text-lg font-semibold text-gray-800">
-              Self-Assessment Test
-            </h1>
-          </div>
-        </div>
-
-        {/* Content Card */}
-        <div className="max-w-2xl mx-auto">
-          <div className="bg-card-biru rounded-3xl p-8 text-white relative">
-            {/* Decorative Brain Illustration */}
-            <div className="absolute -bottom-17 -left-13 ">
+        {/* Card informasi */}
+        <div className="max-w-2xl mx-auto px-4 py-8">
+          <div className="bg-card-biru rounded-3xl p-5 sm:p-6 md:p-8 text-white relative ">
+            {/* Gambar brain */}
+            <div className="absolute -bottom-17 -left-13 hidden md:block">
               <Image
                 src="/images/as-brain.png"
-                alt="Brain Illustration"
-                width={150}
-                height={150}
+                alt="Brain image"
+                width={140}
+                height={140}
               />
             </div>
 
-            <div className="relative z-10 px-8">
-              <h2 className="text-3xl font-bold mb-4 text-center">
+            <div className="relative z-10 ">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-center">
                 Let's Start Test!
               </h2>
-              <p className="text-lg mb-6 opacity-90">
+              <p className="text-base sm:text-lg mb-6 opacity-90 text-center sm:text-left">
                 Be honest, be calm, and trust yourself. Self-awareness is
                 <br />
                 the first step to growth.
               </p>
 
-              <div className="space-y-4 text-sm">
+              <div className="space-y-4 text-sm sm:text-base">
                 <div>
                   <span className="font-semibold">
                     1. Read the question carefully.

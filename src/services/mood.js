@@ -14,7 +14,7 @@ import {
 import { db } from "../lib/firebase";
 
 export const moodService = {
-  // Save or update mood for today
+  // Save or update mood hari ini
   saveMood: async (userId, moodId, moodLabel) => {
     try {
       const today = new Date();
@@ -32,7 +32,6 @@ export const moodService = {
         59
       );
 
-      // Check if mood already exists for today
       const q = query(
         collection(db, "moods"),
         where("userId", "==", userId),
@@ -43,7 +42,6 @@ export const moodService = {
       const querySnapshot = await getDocs(q);
 
       if (!querySnapshot.empty) {
-        // Update existing mood
         const existingDoc = querySnapshot.docs[0];
         await updateDoc(doc(db, "moods", existingDoc.id), {
           moodId,
@@ -52,7 +50,6 @@ export const moodService = {
         });
         return { success: true, action: "updated" };
       } else {
-        // Create new mood entry
         await addDoc(collection(db, "moods"), {
           userId,
           moodId,
@@ -69,7 +66,7 @@ export const moodService = {
     }
   },
 
-  // Get mood history for a user
+  // Get mood history 
   getMoodHistory: async (userId, days = 30) => {
     try {
       const endDate = new Date();
@@ -97,12 +94,11 @@ export const moodService = {
     }
   },
 
-  // Get last 7 days mood
+  // Get mood 7 hari terakhir
   getLast7DaysMood: async (userId) => {
     try {
       const result = await moodService.getMoodHistory(userId, 7);
       if (result.success) {
-        // Create array for last 7 days
         const last7Days = [];
         const today = new Date();
 
@@ -132,7 +128,7 @@ export const moodService = {
     }
   },
 
-  // Calculate streak
+  // Hitung streak mood
   calculateStreak: async (userId) => {
     try {
       const result = await moodService.getMoodHistory(userId, 365); // Get full year
@@ -140,7 +136,6 @@ export const moodService = {
         let streak = 0;
         const today = new Date();
 
-        // Check consecutive days from today backwards
         for (let i = 0; i < 365; i++) {
           const checkDate = new Date(today);
           checkDate.setDate(checkDate.getDate() - i);
@@ -166,7 +161,7 @@ export const moodService = {
     }
   },
 
-  // Get mood statistics for chart
+  // Get mood stats untuk periode tertentu
   getMoodStats: async (userId, period = "week") => {
     try {
       let days;
@@ -190,7 +185,8 @@ export const moodService = {
         const totalMoods = result.data.length;
 
         result.data.forEach((mood) => {
-          moodCounts[mood.moodLabel] = (moodCounts[mood.moodLabel] || 0) + 1;
+          const moodKey = mood.moodLabel.toLowerCase();
+          moodCounts[moodKey] = (moodCounts[moodKey] || 0) + 1;
         });
 
         const moodStats = Object.entries(moodCounts).map(([mood, count]) => ({

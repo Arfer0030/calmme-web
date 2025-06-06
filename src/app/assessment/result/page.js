@@ -5,6 +5,7 @@ import { useAuth } from "../../../hooks/useAuth";
 import { authService } from "../../../services/auth";
 import Sidebar from "../../../components/Sidebar";
 import Image from "next/image";
+import TopBar from "../../../components/TopBar"; 
 
 export default function AssessmentResultPage() {
   const router = useRouter();
@@ -93,53 +94,11 @@ export default function AssessmentResultPage() {
       {/* Main Content */}
       <div className="flex-1 p-6">
         {/* Top Bar */}
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center">
-            <button
-              onClick={() => setSidebarOpen(true)}
-              className="lg:hidden p-2 hover:bg-white/50 rounded-lg transition-colors mr-4"
-            >
-              <svg
-                className="w-6 h-6 text-gray-700"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-            </button>
-
-            <button
-              onClick={handleBack}
-              className="p-2 hover:bg-white/50 rounded-lg transition-colors mr-4"
-            >
-              <svg
-                className="w-6 h-6 text-gray-700"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 19l-7-7 7-7"
-                />
-              </svg>
-            </button>
-
-            <div className="bg-white/80 backdrop-blur-sm px-6 py-2 rounded-full">
-              <h1 className="text-lg font-semibold text-gray-800">
-                Self-Assessment Test
-              </h1>
-            </div>
-          </div>
-        </div>
+        <TopBar
+          onMenuClick={() => setSidebarOpen(true)}
+          onBackClick={handleBack}
+          title="Self-Assessment Test"
+        />
 
         {/* Progress Bar */}
         <div className="max-w-4xl mx-auto mb-8">
@@ -153,11 +112,11 @@ export default function AssessmentResultPage() {
           </div>
         </div>
 
-        {/* Result Content */}
+        {/* Result */}
         <div className="max-w-4xl mx-auto space-y-8">
           {/* Result Card */}
           <div className="bg-gradient-to-r from-card-biru to-blue-900 rounded-3xl p-8 text-white relative">
-            {/* Character Illustrations */}
+            {/* Gambar karakter */}
             <div className="absolute -left-2.5 bottom-5">
               <Image
                 src="/images/as-girl.png"
@@ -197,16 +156,16 @@ export default function AssessmentResultPage() {
             </button>
           </div>
 
-          {/* Recommendations */}
+          {/* Rekomendasi */}
           <div className="text-center mb-6">
             <h3 className="text-2xl font-bold text-gray-800">
               We have some recommendations for you😊!!
             </h3>
           </div>
 
-          {/* Recommendation Cards */}
+          {/* Card rkeomendasi */}
           <div className="grid md:grid-cols-2 gap-6">
-            {/* Meditate Time Card */}
+            {/* Rekomendasi meditate */}
             <div
               className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 relative overflow-hidden group hover:scale-105 transition-transform cursor-pointer"
               onClick={handleMeditate}
@@ -245,7 +204,7 @@ export default function AssessmentResultPage() {
               </div>
             </div>
 
-            {/* Consultation Card */}
+            {/* Rekomendasi konsul */}
             <div
               className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 relative overflow-hidden group hover:scale-105 transition-transform cursor-pointer"
               onClick={handleConsultation}

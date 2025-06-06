@@ -1,10 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Style+Script&display=swap');
 @import "tailwindcss";
+
 @theme {
   --color-b-ungu: #933C9F;
   --color-h-ungu: #7d2f8a; 
   --color-card-biru: #493EAC;
   --color-sidebar: #CEBFE6;
+  --color-tab-ungu: #CEBFE6;
   --font-monserrat: 'Montserrat', sans-serif;
   --font-nunito: 'Nunito', sans-serif;
   --font-script: 'Style Script', cursive;
@@ -16,17 +18,15 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Hide scrollbar for Chrome, Safari and Opera */
 .scrollbar-hide {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;  
+  scrollbar-width: none;  
 }
 
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
 
-/* Backdrop blur support */
 .backdrop-blur-md {
   backdrop-filter: blur(12px);
 }
@@ -35,7 +35,6 @@ body {
   backdrop-filter: blur(4px);
 }
 
-/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
 }
@@ -53,17 +52,14 @@ body {
   background: #a8a8a8;
 }
 
-/* Smooth transitions */
 * {
   transition: all 0.2s ease-in-out;
 }
 
-/* Input focus effects */
 input:focus {
   transform: translateY(-1px);
 }
 
-/* Button hover effects */
 button:hover:not(:disabled) {
   transform: translateY(-1px);
 }

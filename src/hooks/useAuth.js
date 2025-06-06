@@ -19,7 +19,7 @@ export const useAuth = () => {
   return { user, loading };
 };
 
-// Helper function untuk redirect
+// Redirect
 export const useAuthRedirect = (redirectTo = "/home") => {
   const { user, loading } = useAuth();
 

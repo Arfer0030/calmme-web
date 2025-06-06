@@ -16,7 +16,6 @@ import {
 } from "firebase/firestore";
 import { auth, db } from "../lib/firebase";
 
-// Auth Helper Functions
 export const authService = {
   // Login dengan email
   loginWithEmail: async (email, password) => {
@@ -56,14 +55,14 @@ export const authService = {
         return { success: false, error: "Username already exists" };
       }
 
-      // Create auth user
+      // Create user
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         userData.email,
         userData.password
       );
 
-      // Save to Firestore
+      // Simpan ke Firestore
       const userMap = {
         username: userData.username.toLowerCase(),
         email: userData.email,
@@ -96,7 +95,7 @@ export const authService = {
     }
   },
 
-  // Get email by username
+  // Get email dari username
   getEmailByUsername: async (username) => {
     try {
       const q = query(
@@ -115,7 +114,7 @@ export const authService = {
     }
   },
 
-  // Check username exists
+  // Check username 
   isUsernameExists: async (username) => {
     try {
       const q = query(
@@ -130,7 +129,7 @@ export const authService = {
     }
   },
 
-  // Get current user data
+  // Get user data saat ini
   getCurrentUserData: async () => {
     try {
       const user = auth.currentUser;

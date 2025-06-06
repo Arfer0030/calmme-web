@@ -11,7 +11,7 @@ export default function AuthForm() {
     username: "",
     email: "",
     password: "",
-    loginIdentifier: "", // Untuk username atau email di login
+    loginIdentifier: "",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -32,7 +32,6 @@ export default function AuthForm() {
 
     try {
       if (isLogin) {
-        // Login Logic menggunakan authService
         let result;
 
         if (validation.isValidEmail(formData.loginIdentifier)) {
@@ -97,10 +96,10 @@ export default function AuthForm() {
 
   return (
     <div className="min-h-screen bg-white flex lg:flex-row relative overflow-hidden">
-      {/* Left Side - Logo Section */}
+      {/* bagian kiri (logo) */}
       <div className="flex-1 flex items-center justify-center relative z-10 py-8 lg:py-0">
         <div className="text-center">
-          {/* Logo Background */}
+          {/* bg logo */}
           <div className="relative mb-8">
             <div className="w-64 h-56 sm:w-72 sm:h-64 md:w-80 md:h-72 relative">
               <Image
@@ -110,10 +109,9 @@ export default function AuthForm() {
                 className=" object-cover z-10"
                 sizes="(max-width: 640px) 256px, (max-width: 768px) 288px, 320px"
               />
-              {/* Logo Placeholder */}
+              {/* logo */}
               <div className="absolute inset-0 flex flex-col items-center justify-center z-20">
                 <div className="w-24 h-24 sm:w-32 sm:h-32 mb-2 sm:mb-4 relative">
-                  {/* Woman Silhouette SVG */}
                   <Image
                     src="/images/logo.png"
                     alt="Logo"
@@ -129,9 +127,9 @@ export default function AuthForm() {
         </div>
       </div>
 
-      {/* Right Side - Form Section */}
+      {/* bagian kanan (form) */}
       <div className="flex-1 flex items-center justify-center relative z-10 p-4 sm:p-8">
-        {/* Background Shape */}
+        {/* background */}
         <div className="absolute inset-y-0 left-0 w-full h-full">
           <Image
             src="/images/bg-form.png"
@@ -141,9 +139,9 @@ export default function AuthForm() {
           />
         </div>
 
-        {/* Form Container */}
+        {/* card form */}
         <div className="relative z-20 w-full max-w-md p-6 sm:p-8 rounded-xl ">
-          {/* Welcome Text */}
+          {/* teks welcome */}
           <div className="text-center mb-6 sm:mb-8">
             <h1 className="font-monserrat font-bold text-xl sm:text-2xl text-gray-800 mb-1 sm:mb-2">
               Welcome to
@@ -152,7 +150,7 @@ export default function AuthForm() {
               CalmMe
             </h2>
 
-            {/* Tab Buttons */}
+            {/* button tab */}
             <div className="flex bg-gray-100 backdrop-blur-sm rounded-full p-1 mb-6 sm:mb-8">
               <button
                 onClick={() => setIsLogin(true)}
@@ -184,11 +182,11 @@ export default function AuthForm() {
               </div>
             )}
 
-            {/* Username Field - Only for Register */}
+            {/* username field buat register */}
             {!isLogin && (
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  {/* User Icon Placeholder */}
+                  {/* user icon */}
                   <svg
                     className="h-5 w-5 text-black"
                     fill="none"
@@ -215,10 +213,10 @@ export default function AuthForm() {
               </div>
             )}
 
-            {/* Email/Login Field */}
+            {/* email/usn field */}
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                {/* Email Icon Placeholder */}
+                {/* email icon */}
                 <svg
                   className="h-5 w-5 text-black"
                   fill="none"
@@ -244,10 +242,10 @@ export default function AuthForm() {
               />
             </div>
 
-            {/* Password Field */}
+            {/* pasword field */}
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                {/* Lock Icon Placeholder */}
+                {/* icon lock */}
                 <svg
                   className="h-5 w-5 text-black"
                   fill="none"
@@ -276,7 +274,7 @@ export default function AuthForm() {
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute inset-y-0 right-0 pr-4 flex items-center hover:text-white transition-colors"
               >
-                {/* Eye Icon Placeholder */}
+                {/* eye icon */}
                 <svg
                   className="h-5 w-5 text-black"
                   fill="none"
@@ -297,7 +295,7 @@ export default function AuthForm() {
               </button>
             </div>
 
-            {/* Submit Button */}
+            {/* submit button */}
             <div className="pt-4">
               <button
                 type="submit"

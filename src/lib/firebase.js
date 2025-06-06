@@ -20,7 +20,7 @@ const app =
   export const db = getFirestore(app);
   export default app;
 
-  // Helper function untuk mencari email berdasarkan username
+  // Cari email dari username
 export const getEmailByUsername = async (username) => {
   try {
     const q = query(
@@ -40,7 +40,7 @@ export const getEmailByUsername = async (username) => {
   }
 };
 
-// Helper function untuk cek apakah username sudah ada
+// Cek username sudah ada
 export const isUsernameExists = async (username) => {
   try {
     const q = query(

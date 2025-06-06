@@ -121,7 +121,7 @@ export default function HomeContent({
           <div className="flex items-center space-x-4">
             <button
               onClick={onMenuClick}
-              className="lg:hidden p-2 rounded-md hover:bg-gray-100"
+              className="p-2 rounded-md hover:bg-gray-100"
             >
               <svg
                 className="w-6 h-6"
@@ -155,7 +155,7 @@ export default function HomeContent({
             />
           </button>
         </div>
-        {/* Mood Selection */}
+        {/* Pilihan mood */}
         <section>
           <h2 className="text-lg font-semibold text-gray-900 mt-8 mb-4 text-center">
             How are you today?
@@ -188,9 +188,9 @@ export default function HomeContent({
         </section>
       </header>
 
-      {/* Main Content */}
+      {/* Main content */}
       <main className="p-6 space-y-8 bg-white mt-[-32px] rounded-tl-3xl rounded-tr-3xl shadow-lg">
-        {/* For You Section */}
+        {/* Bagian For you */}
         <section>
           <h2 className="text-lg font-semibold text-gray-900 mb-4">For You</h2>
           <div className="bg-gradient-to-bl from-purple-100 via-blue-100 to-yellow-100 rounded-2xl p-6 relative ">

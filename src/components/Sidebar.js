@@ -16,6 +16,7 @@ export default function Sidebar({ isOpen, onClose, userData }) {
     }
   };
 
+  // Daftar item menu
   const menuItems = [
     {
       id: "home",
@@ -95,12 +96,10 @@ export default function Sidebar({ isOpen, onClose, userData }) {
           isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         } transition-transform duration-300 ease-in-out flex flex-col`}
       >
-        {/* Logo */}
+        {/* Teks app */}
         <div className="flex items-center justify-between p-6">
           <div className="flex items-center space-x-3">
-            <div className="text-2xl font-script font-bold ">
-              CalmMe
-            </div>
+            <div className="text-2xl font-script font-bold ">CalmMe</div>
           </div>
           <button
             onClick={onClose}
@@ -122,21 +121,21 @@ export default function Sidebar({ isOpen, onClose, userData }) {
           </button>
         </div>
 
-        {/* Navigation */}
+        {/* Navigasi */}
         <nav className="flex-1 p-4 space-y-2">
           {menuItems.map((item) => (
             <button
               key={item.id}
               onClick={() => {
                 setActiveMenu(item.id);
-                if (item.path !== "/home") {
-                  router.push(item.path);
+                router.push(item.path);
+                if (typeof onClose === "function" && window.innerWidth < 1024) {
+                  onClose();
                 }
-                onClose();
               }}
               className={`w-full flex flex-col items-center space-y-1 px-4 py-3 rounded-lg text-left transition-colors ${
                 activeMenu === item.id
-                  ? " text-h-ungu border-r-6  border-b-ungu"
+                  ? "text-h-ungu border-r-4 border-b-ungu"
                   : "text-gray-600 hover:bg-purple-200"
               }`}
             >
@@ -176,6 +175,7 @@ export default function Sidebar({ isOpen, onClose, userData }) {
               <p className="text-sm font-medium text-gray-900">
                 {userData?.username || "User"}
               </p>
+              {/* Tombol sign out */}
               <button
                 onClick={handleSignOut}
                 className="text-xs text-gray-500 hover:text-red-600 transition-colors"
