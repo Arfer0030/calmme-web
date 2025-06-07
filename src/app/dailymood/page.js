@@ -149,6 +149,7 @@ export default function DailyMoodPage() {
     bored: "bg-green-200",
     worried: "bg-pink-200",
     excited: "bg-indigo-200",
+    angry: "bg-red-400",
   };
 
   if (loading) {
@@ -179,7 +180,7 @@ export default function DailyMoodPage() {
         <TopBar
           onMenuClick={() => setSidebarOpen(true)}
           onBackClick={handleBack}
-          title="Daily Mood Tracker" 
+          title="Daily Mood Tracker"
         />
 
         <div className="max-w-4xl mx-auto space-y-8">
@@ -189,21 +190,19 @@ export default function DailyMoodPage() {
             <p className="text-lg text-gray-600 mb-6">{streak} Day Streak</p>
 
             {/* Bagian streak */}
-            <div className="grid grid-cols-7 gap-4">
+            <div className="grid grid-cols-7 gap-3">
               {last7Days.map((day, index) => (
-                <div key={index} className="text-center">
-                  <div className="text-sm text-gray-600 mb-2">
+                <div key={index} className="text-center bg-gradient-to-t from-purple-200 to-purple-50 rounded-2xl ">
+                  <div className="text-sm font-semibold text-gray-600 ">
                     {day.dayName}
                   </div>
-                  <div className="text-lg font-semibold text-gray-800 mb-3">
+                  <div className="text-lg font-semibold text-gray-800 mb-1">
                     {day.dayNumber}
                   </div>
 
                   <div
-                    className={`w-16 h-20 mx-auto rounded-2xl flex flex-col items-center justify-center ${
+                    className={`object-cover mx-auto flex flex-col items-center justify-center ${
                       day.mood
-                        ? moodColors[day.mood.moodId] || "bg-gray-100"
-                        : "bg-gray-100"
                     }`}
                   >
                     {day.mood ? (
@@ -218,12 +217,12 @@ export default function DailyMoodPage() {
                           alt={day.mood.moodLabel}
                           className="w-8 h-8 mb-1"
                         />
-                        <span className="text-xs text-gray-700">
+                        <span className="text-xs text-b-ungu mb-2">
                           {day.mood.moodLabel}
                         </span>
                       </>
                     ) : (
-                      <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
+                      <div className="w-8 h-8 bg-gray-400 rounded-full"></div>
                     )}
                   </div>
                 </div>
@@ -280,7 +279,9 @@ export default function DailyMoodPage() {
 
                       {/* Bar */}
                       <div
-                        className="w-8 bg-purple-400 rounded-t-lg flex flex-col justify-end items-center relative transition-all duration-500"
+                        className={`w-8 rounded-t-lg flex flex-col justify-end items-center relative transition-all duration-500 ${
+                          moodColors[mood.id] || "bg-gray-300"
+                        }`}
                         style={{
                           height: `${Math.max(mood.percentage * 1.8, 8)}px`,
                           minHeight: "8px",

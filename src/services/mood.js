@@ -14,7 +14,7 @@ import {
 import { db } from "../lib/firebase";
 
 export const moodService = {
-  // Save or update mood hari ini
+  // Save / update mood hari ini
   saveMood: async (userId, moodId, moodLabel) => {
     try {
       const today = new Date();
@@ -131,7 +131,7 @@ export const moodService = {
   // Hitung streak mood
   calculateStreak: async (userId) => {
     try {
-      const result = await moodService.getMoodHistory(userId, 365); // Get full year
+      const result = await moodService.getMoodHistory(userId, 365); 
       if (result.success) {
         let streak = 0;
         const today = new Date();
@@ -161,7 +161,7 @@ export const moodService = {
     }
   },
 
-  // Get mood stats untuk periode tertentu
+  // Get mood persentase untuk periode tertentu
   getMoodStats: async (userId, period = "week") => {
     try {
       let days;

@@ -76,6 +76,7 @@ export default function HomeContent({
     { id: "sad", label: "sad", iconSrc: "/images/mood/md_sad.png" },
     { id: "bored", label: "bored", iconSrc: "/images/mood/md_bored.png" },
     { id: "worried", label: "worried", iconSrc: "/images/mood/md_worried.png" },
+    { id: "angry", label: "angry", iconSrc: "/images/mood/md_angry.png" },
   ];
 
   const categories = [
@@ -205,7 +206,10 @@ export default function HomeContent({
                 <span>Upgrade to premium to get more profit</span>
                 <span>now !</span>
               </h3>
-              <button className="border px-4 py-2 rounded-full font-medium transition-colors">
+              <button 
+              className="border px-4 py-2 rounded-full font-medium transition-colors"
+              onClick={() => router.push("/subscribe")}
+              >
                 Learn more →
               </button>
             </div>
