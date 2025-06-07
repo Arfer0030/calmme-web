@@ -3,3 +3,4 @@ export { authService } from "./auth";
 export { consultationService } from "./consultation";
 export { userService } from "./user";
 export { moodService } from "./mood"; 
+export { psychologistService } from "./psychologist";

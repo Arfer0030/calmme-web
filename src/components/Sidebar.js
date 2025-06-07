@@ -1,11 +1,12 @@
 "use client";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import { authService } from "../services/auth";
 
 export default function Sidebar({ isOpen, onClose, userData }) {
   const router = useRouter();
-  const [activeMenu, setActiveMenu] = useState("home");
+  const pathname = usePathname();
+  const [activeMenu, setActiveMenu] = useState("");
 
   const handleSignOut = async () => {
     try {
@@ -80,26 +81,48 @@ export default function Sidebar({ isOpen, onClose, userData }) {
     },
   ];
 
+  // Update active menu berdasarkan pathname
+  useEffect(() => {
+    // Cek apakah pathname cocok dengan salah satu menu item
+    const currentMenuItem = menuItems.find((item) => {
+      if (item.path === "/home" && pathname === "/home") {
+        return true;
+      }
+      if (
+        item.id === "consultation" &&
+        (pathname === "/consultation" || pathname.startsWith("/consultation"))
+      ) {
+        return true;
+      }
+      if (item.path === "/payment-history" && pathname === "/payment-history") {
+        return true;
+      }
+      return false;
+    });
+    
+    setActiveMenu(currentMenuItem ? currentMenuItem.id : "");
+  }, [pathname]);
+
   return (
     <>
       {/* Overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-opacity-50 z-40 lg:hidden"
+          className="fixed inset-0 z-40 lg:hidden"
           onClick={onClose}
         />
       )}
 
       {/* Sidebar */}
       <div
-        className={`fixed lg:static inset-y-0 left-0 z-50 w-60 bg-sidebar shadow-lg transform ${
+        className={`fixed lg:relative inset-y-0 left-0 z-50 w-60 bg-sidebar shadow-lg transform ${
           isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         } transition-transform duration-300 ease-in-out flex flex-col`}
       >
         {/* Teks app */}
         <div className="flex items-center justify-between p-6">
           <div className="flex items-center space-x-3">
-            <div className="text-2xl font-script font-bold ">CalmMe</div>
+            <div className="text-2xl font-script font-bold">CalmMe</div>
           </div>
           <button
             onClick={onClose}
@@ -122,12 +145,11 @@ export default function Sidebar({ isOpen, onClose, userData }) {
         </div>
 
         {/* Navigasi */}
-        <nav className="flex-1 p-4 space-y-2">
+        <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
           {menuItems.map((item) => (
             <button
               key={item.id}
               onClick={() => {
-                setActiveMenu(item.id);
                 router.push(item.path);
                 if (typeof onClose === "function" && window.innerWidth < 1024) {
                   onClose();
@@ -135,7 +157,7 @@ export default function Sidebar({ isOpen, onClose, userData }) {
               }}
               className={`w-full flex flex-col items-center space-y-1 px-4 py-3 rounded-lg text-left transition-colors ${
                 activeMenu === item.id
-                  ? "text-h-ungu border-r-4 border-b-ungu"
+                  ? "text-h-ungu border-r-4 border-b-ungu bg-purple-50"
                   : "text-gray-600 hover:bg-purple-200"
               }`}
             >
@@ -148,12 +170,12 @@ export default function Sidebar({ isOpen, onClose, userData }) {
         {/* User Profile */}
         <div className="p-4">
           <div className="flex flex-col items-center space-y-3">
-            <div className="w-15 h-15 bg-purple-200 rounded-full flex items-center justify-center">
+            <div className="w-18 h-18 bg-purple-200 rounded-full flex items-center justify-center">
               {userData?.profilePicture ? (
                 <img
                   src={userData.profilePicture}
                   alt="Profile"
-                  className="w-15 h-15 rounded-full object-cover"
+                  className="w-18 h-18 rounded-full object-cover"
                 />
               ) : (
                 <svg
