@@ -107,10 +107,7 @@ export default function Sidebar({ isOpen, onClose, userData }) {
     <>
       {/* Overlay */}
       {isOpen && (
-        <div
-          className="fixed inset-0 z-40 lg:hidden"
-          onClick={onClose}
-        />
+        <div className="fixed inset-0 z-40 lg:hidden" onClick={onClose} />
       )}
 
       {/* Sidebar */}
@@ -170,16 +167,18 @@ export default function Sidebar({ isOpen, onClose, userData }) {
         {/* User Profile */}
         <div className="p-4">
           <div className="flex flex-col items-center space-y-3">
-            <div className="w-18 h-18 bg-purple-200 rounded-full flex items-center justify-center">
+            <div className="w-18 h-18 bg-purple-200 rounded-full flex items-center justify-center overflow-hidden hover:scale-105 transition-transform cursor-pointer">
               {userData?.profilePicture ? (
                 <img
                   src={userData.profilePicture}
+                  onClick={() => router.push("/settings")}
                   alt="Profile"
-                  className="w-18 h-18 rounded-full object-cover"
+                  className="w-full h-full object-cover"
                 />
               ) : (
                 <svg
-                  className="w-8 h-8 text-purple-600"
+                  onClick={() => router.push("/settings")}
+                  className="w-8 h-8 text-purple-600 cursor-pointer"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
