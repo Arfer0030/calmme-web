@@ -12,45 +12,10 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
-// Inisialisasi Firebase
+// Initialize Firebase only if it hasn't been initialized yet
 const app =
   getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
 
-  export const auth = getAuth(app);
-  export const db = getFirestore(app);
-  export default app;
-
-  // Cari email dari username
-export const getEmailByUsername = async (username) => {
-  try {
-    const q = query(
-      collection(db, 'users'), 
-      where('username', '==', username.toLowerCase())
-    );
-    const querySnapshot = await getDocs(q);
-    
-    if (!querySnapshot.empty) {
-      const userDoc = querySnapshot.docs[0];
-      return userDoc.data().email;
-    }
-    return null;
-  } catch (error) {
-    console.error('Error finding user by username:', error);
-    return null;
-  }
-};
-
-// Cek username sudah ada
-export const isUsernameExists = async (username) => {
-  try {
-    const q = query(
-      collection(db, 'users'), 
-      where('username', '==', username.toLowerCase())
-    );
-    const querySnapshot = await getDocs(q);
-    return !querySnapshot.empty;
-  } catch (error) {
-    console.error('Error checking username:', error);
-    return false;
-  }
-};
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+export default app;

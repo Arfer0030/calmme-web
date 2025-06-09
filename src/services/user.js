@@ -1,4 +1,13 @@
-import { doc, updateDoc, getDoc, Timestamp } from "firebase/firestore";
+import {
+  doc,
+  updateDoc,
+  getDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+  Timestamp,
+} from "firebase/firestore";
 import { db } from "../lib/firebase";
 
 export const userService = {
@@ -40,6 +49,41 @@ export const userService = {
       return { success: true };
     } catch (error) {
       return { success: false, error: error.message };
+    }
+  },
+
+  // Cari email dari username
+  getEmailByUsername: async (username) => {
+    try {
+      const q = query(
+        collection(db, "users"),
+        where("username", "==", username.toLowerCase())
+      );
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        const userDoc = querySnapshot.docs[0];
+        return userDoc.data().email;
+      }
+      return null;
+    } catch (error) {
+      console.error("Error finding user by username:", error);
+      return null;
+    }
+  },
+
+  // Cek username sudah ada
+  isUsernameExists: async (username) => {
+    try {
+      const q = query(
+        collection(db, "users"),
+        where("username", "==", username.toLowerCase())
+      );
+      const querySnapshot = await getDocs(q);
+      return !querySnapshot.empty;
+    } catch (error) {
+      console.error("Error checking username:", error);
+      return false;
     }
   },
 };
