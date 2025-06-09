@@ -15,6 +15,7 @@ import {
   Timestamp,
 } from "firebase/firestore";
 import { auth, db } from "../lib/firebase";
+import { profileService } from "./profile";
 
 export const authService = {
   // Login dengan email
@@ -114,7 +115,7 @@ export const authService = {
     }
   },
 
-  // Check username 
+  // Check username
   isUsernameExists: async (username) => {
     try {
       const q = query(
@@ -136,7 +137,22 @@ export const authService = {
       if (!user) return null;
 
       const userDoc = await getDoc(doc(db, "users", user.uid));
-      return userDoc.exists() ? userDoc.data() : null;
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+
+        // Check if email in Firestore matches Auth email
+        if (userData.email !== user.email) {
+          // Sync email if mismatch
+          await profileService.syncEmailToFirestore(user.uid);
+
+          // Get updated data
+          const updatedDoc = await getDoc(doc(db, "users", user.uid));
+          return updatedDoc.exists() ? updatedDoc.data() : null;
+        }
+
+        return userData;
+      }
+      return null;
     } catch (error) {
       console.error("Error fetching user data:", error);
       return null;

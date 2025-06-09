@@ -5,6 +5,8 @@ import { useAuth } from "../../hooks/useAuth";
 import { authService } from "../../services/auth";
 import Sidebar from "../../components/Sidebar";
 import EditProfile from "../../components/settings/EditProfile";
+import TopBar from "../../components/TopBar";
+import Security from "../../components/settings/Security";
 
 export default function SettingsPage() {
   const router = useRouter();
@@ -12,6 +14,9 @@ export default function SettingsPage() {
   const [userData, setUserData] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("Edit Profile");
+  const handleBack = () => {
+    router.back();
+  }
 
   useEffect(() => {
     if (!loading && !user) {
@@ -48,11 +53,7 @@ export default function SettingsPage() {
       case "Edit Profile":
         return <EditProfile userData={userData} />;
       case "Security":
-        return (
-          <div className="p-8 text-center text-gray-500">
-            Security settings coming soon...
-          </div>
-        );
+        return <Security />;
       case "Notifications":
         return (
           <div className="p-8 text-center text-gray-500">
@@ -107,9 +108,11 @@ export default function SettingsPage() {
       <div className="flex-1 flex overflow-hidden ">
         <div className="flex-1 flex flex-col overflow-hidden ">
           <div className="backdrop-blur-sm border-gray-200 px-4 sm:px-6 py-4 bg-gradient-to-b from-purple-200">
-            <h1 className=" text-xl md:text-2xl font-semibold text-gray-800 mb-4">
-              Settings
-            </h1>
+            <TopBar
+                      onMenuClick={() => setSidebarOpen(true)}
+                      onBackClick={handleBack}
+                      title="Settings"
+                    />
             {/* Tab Navigasi */}
             <div className="flex justify-center">
               <div className="flex space-x-6 sm:space-x-8 md:space-x-12">

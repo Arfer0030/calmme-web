@@ -1,11 +1,13 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useAuth } from "../../hooks/useAuth";
 import { authService } from "../../services/auth";
 import { profileService } from "../../services/profile";
 import Image from "next/image";
 
 export default function EditProfile({ userData: initialUserData }) {
+  const router = useRouter();
   const { user } = useAuth();
   const [userData, setUserData] = useState(initialUserData);
   const [formData, setFormData] = useState({
@@ -15,6 +17,10 @@ export default function EditProfile({ userData: initialUserData }) {
     gender: "",
     dateOfBirth: "",
   });
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [showVerificationModal, setShowVerificationModal] = useState(false);
+  const [pendingEmailUpdate, setPendingEmailUpdate] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -66,6 +72,48 @@ export default function EditProfile({ userData: initialUserData }) {
     }));
   };
 
+  const handleEmailVerification = async () => {
+    if (!currentPassword) {
+      setMessage("Please enter your current password to update email.");
+      return;
+    }
+
+    setLoading(true);
+    setMessage("");
+
+    try {
+      const result = await profileService.updateEmailWithAuth(
+        user.uid,
+        pendingEmailUpdate,
+        currentPassword
+      );
+
+      if (result.success) {
+        // Close password modal and show verification modal
+        setShowPasswordModal(false);
+        setShowVerificationModal(true);
+        setCurrentPassword("");
+        setMessage("");
+      } else {
+        setMessage("Error updating email: " + result.error);
+      }
+    } catch (error) {
+      setMessage("Error updating email: " + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleVerificationComplete = async () => {
+    setMessage("Logging out... Please login with your new email address.");
+
+    // Wait 2 seconds then logout
+    setTimeout(async () => {
+      await profileService.logoutUser(user.uid);
+      router.replace("/auth");
+    }, 2000);
+  };
+
   const handleSaveChanges = async () => {
     if (!user) return;
 
@@ -86,6 +134,15 @@ export default function EditProfile({ userData: initialUserData }) {
         return;
       }
 
+      // Check if email is being updated
+      if (changedFields.email) {
+        setPendingEmailUpdate(changedFields.email);
+        setShowPasswordModal(true);
+        setLoading(false);
+        return;
+      }
+
+      // Update other fields (non-email)
       const result = await profileService.updateProfile(
         user.uid,
         changedFields
@@ -167,6 +224,10 @@ export default function EditProfile({ userData: initialUserData }) {
             className="w-full px-4 py-3 border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-purple-50"
             placeholder="Enter email"
           />
+          <p className="text-xs text-gray-500 mt-1">
+            Changing email will require password confirmation and email
+            verification.
+          </p>
         </div>
 
         <div>
@@ -205,7 +266,7 @@ export default function EditProfile({ userData: initialUserData }) {
               <div className="w-16 h-16 bg-pink-200 rounded-full flex items-center justify-center mb-2">
                 <Image
                   src="/images/ic_female.png"
-                  alt="Male"
+                  alt="Female"
                   width={50}
                   height={50}
                 />
@@ -237,6 +298,7 @@ export default function EditProfile({ userData: initialUserData }) {
             {loading ? "Saving..." : "Save Changes"}
           </button>
         </div>
+
         {message && (
           <div
             className={`p-4 rounded-lg ${
@@ -249,6 +311,110 @@ export default function EditProfile({ userData: initialUserData }) {
           </div>
         )}
       </div>
+
+      {/* Password Confirmation Modal */}
+      {showPasswordModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md">
+            <h3 className="text-lg font-bold mb-4">Confirm Email Update</h3>
+            <p className="text-sm text-gray-600 mb-4">
+              To update your email to <strong>{pendingEmailUpdate}</strong>,
+              please enter your current password.
+            </p>
+
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Current Password
+              </label>
+              <input
+                type="password"
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                placeholder="Enter your current password"
+              />
+            </div>
+
+            {message && (
+              <div className="mb-4 p-3 rounded-lg bg-red-100 text-red-700 border border-red-200 text-sm">
+                {message}
+              </div>
+            )}
+
+            <div className="flex space-x-4">
+              <button
+                onClick={() => {
+                  setShowPasswordModal(false);
+                  setCurrentPassword("");
+                  setPendingEmailUpdate("");
+                  setMessage("");
+                  setLoading(false);
+                }}
+                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleEmailVerification}
+                disabled={loading || !currentPassword}
+                className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loading ? "Updating..." : "Update Email"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Email Verification Modal */}
+      {showVerificationModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md text-center">
+            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg
+                className="w-8 h-8 text-green-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                />
+              </svg>
+            </div>
+
+            <h3 className="text-lg font-bold mb-4">Verification Email Sent!</h3>
+            <p className="text-sm text-gray-600 mb-6">
+              We've sent a verification email to{" "}
+              <strong>{pendingEmailUpdate}</strong>. Please check your inbox and
+              click the verification link to complete the email update.
+            </p>
+
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+              <p className="text-sm text-yellow-800">
+                <strong>Important:</strong> After clicking the verification
+                link, you will be automatically logged out. Please login again
+                with your new email address.
+              </p>
+            </div>
+
+            <button
+              onClick={handleVerificationComplete}
+              className="w-full px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+            >
+              I've Verified My Email - Logout Now
+            </button>
+
+            <p className="text-xs text-gray-500 mt-4">
+              Didn't receive the email? Check your spam folder or try again
+              later.
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
