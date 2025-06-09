@@ -5,7 +5,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { authService } from "../../services/auth";
 import { moodService } from "../../services/mood";
 import Sidebar from "../../components/Sidebar";
-import TopBar from "../../components/TopBar"; 
+import TopBar from "../../components/TopBar";
 
 export default function DailyMoodPage() {
   const router = useRouter();
@@ -32,12 +32,12 @@ export default function DailyMoodPage() {
     },
     {
       id: "disappointed",
-      label: "Disapp",
+      label: "Disappointed",
       icon: "/images/mood/md_diss.png",
     },
     {
       id: "frustrated",
-      label: "Frust",
+      label: "Frustrated",
       icon: "/images/mood/md_frustrated.png",
     },
     {
@@ -101,7 +101,7 @@ export default function DailyMoodPage() {
             setLast7Days(last7DaysResult.data);
           }
 
-          // Get mood stats 
+          // Get mood stats
           const period = selectedPeriod.toLowerCase();
           const statsResult = await moodService.getMoodStats(user.uid, period);
           if (statsResult.success) {
@@ -149,6 +149,7 @@ export default function DailyMoodPage() {
     bored: "bg-green-200",
     worried: "bg-pink-200",
     excited: "bg-indigo-200",
+    angry: "bg-red-400",
   };
 
   if (loading) {
@@ -179,7 +180,7 @@ export default function DailyMoodPage() {
         <TopBar
           onMenuClick={() => setSidebarOpen(true)}
           onBackClick={handleBack}
-          title="Daily Mood Tracker" 
+          title="Daily Mood Tracker"
         />
 
         <div className="max-w-4xl mx-auto space-y-8">
@@ -189,22 +190,21 @@ export default function DailyMoodPage() {
             <p className="text-lg text-gray-600 mb-6">{streak} Day Streak</p>
 
             {/* Bagian streak */}
-            <div className="grid grid-cols-7 gap-4">
+            <div className="grid grid-cols-7 gap-3">
               {last7Days.map((day, index) => (
-                <div key={index} className="text-center">
-                  <div className="text-sm text-gray-600 mb-2">
+                <div
+                  key={index}
+                  className="text-center bg-gradient-to-t from-purple-200 to-purple-50 rounded-2xl "
+                >
+                  <div className="text-sm font-semibold text-gray-600 ">
                     {day.dayName}
                   </div>
-                  <div className="text-lg font-semibold text-gray-800 mb-3">
+                  <div className="text-lg font-semibold text-gray-800 mb-1">
                     {day.dayNumber}
                   </div>
 
                   <div
-                    className={`w-16 h-20 mx-auto rounded-2xl flex flex-col items-center justify-center ${
-                      day.mood
-                        ? moodColors[day.mood.moodId] || "bg-gray-100"
-                        : "bg-gray-100"
-                    }`}
+                    className={`object-cover mx-auto flex flex-col items-center justify-center ${day.mood}`}
                   >
                     {day.mood ? (
                       <>
@@ -218,12 +218,12 @@ export default function DailyMoodPage() {
                           alt={day.mood.moodLabel}
                           className="w-8 h-8 mb-1"
                         />
-                        <span className="text-xs text-gray-700">
+                        <span className="text-xs text-b-ungu mb-2">
                           {day.mood.moodLabel}
                         </span>
                       </>
                     ) : (
-                      <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
+                      <div className="w-8 h-8 bg-gray-400 rounded-full"></div>
                     )}
                   </div>
                 </div>
@@ -270,43 +270,49 @@ export default function DailyMoodPage() {
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600 mx-auto"></div>
                 </div>
               ) : (
-                <div className="flex items-end justify-center space-x-6 h-64">
-                  {moodStats.map((mood, index) => (
-                    <div key={index} className="flex flex-col items-center">
-                      {/* Label persentase */}
-                      <div className="text-sm text-gray-600 mb-2 h-6">
-                        {mood.percentage > 0 ? `${mood.percentage}%` : ""}
-                      </div>
+                <div className="overflow-x-auto py-2">
+                  <div className="flex items-end justify-center space-x-2 sm:space-x-4 md:space-x-6 h-64 min-w-max px-4">
+                    
+                    {moodStats.map((mood, index) => (
+                      <div key={index} className="flex flex-col items-center">
+                        {/* Label persentase */}
+                        <div className="text-xs sm:text-sm text-gray-600 mb-2 h-6">
+                          {mood.percentage > 0 ? `${mood.percentage}%` : ""}
+                        </div>
 
-                      {/* Bar */}
-                      <div
-                        className="w-8 bg-purple-400 rounded-t-lg flex flex-col justify-end items-center relative transition-all duration-500"
-                        style={{
-                          height: `${Math.max(mood.percentage * 1.8, 8)}px`,
-                          minHeight: "8px",
-                        }}
-                      >
-                        {/* Bar kosong */}
-                        {mood.percentage === 0 && (
-                          <div className="w-full h-full bg-gray-200 rounded-t-lg"></div>
-                        )}
-                      </div>
+                        {/* Bar */}
+                        <div
+                          className={`rounded-t-lg flex flex-col justify-end items-center relative transition-all duration-500 ${
+                            moodColors[mood.id] || "bg-gray-300"
+                          } w-6 sm:w-7 md:w-8`} 
+                          style={{
+                            height: `${Math.max(mood.percentage * 1.8, 8)}px`,
+                            minHeight: "8px",
+                          }}
+                        >
+                          {/* Bar kosong */}
+                          {mood.percentage === 0 && (
+                            <div className="w-full h-full bg-gray-200 rounded-t-lg"></div>
+                          )}
+                        </div>
 
-                      {/* Icon mod */}
-                      <div className="mt-2">
-                        <img
-                          src={mood.icon || ""}
-                          alt={mood.label}
-                          className="w-6 h-6"
-                        />
-                      </div>
+                        {/* Icon mod */}
+                        <div className="mt-2">
+                          <img
+                            src={mood.icon || ""}
+                            alt={mood.label}
+                            className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8" 
+                          />
+                        </div>
 
-                      {/* Label mood */}
-                      <div className="text-xs text-gray-600 mt-1 text-center max-w-12">
-                        {mood.label}
+                        {/* Label mood */}
+                        <div className="text-xs text-gray-600 mt-1 text-center w-12 sm:w-14 md:w-16 overflow-hidden">
+                        
+                          {mood.label}
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
