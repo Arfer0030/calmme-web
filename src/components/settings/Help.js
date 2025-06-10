@@ -50,7 +50,7 @@ ${userData?.username || "CalmMe User"}`;
 
   return (
     <div className="max-w-2xl mx-auto p-6">
-      {/* Main Help Card */}
+      {/* Card */}
       <div className="bg-card-ungu rounded-3xl p-8 shadow-lg">
         {/* Header */}
         <div className="text-center mb-8">
@@ -59,7 +59,7 @@ ${userData?.username || "CalmMe User"}`;
           </h2>
         </div>
 
-        {/* Help Options */}
+        {/* Help Opsi */}
         <div className="space-y-4">
           {helpOptions.map((option) => (
             <div
@@ -110,7 +110,7 @@ ${userData?.username || "CalmMe User"}`;
         </div>
       </div>
 
-      {/* Additional Info */}
+      {/* Info */}
       <div className="mt-6 text-center">
         <p className="text-sm text-gray-600">
           We typically respond within 24-48 hours during business days.

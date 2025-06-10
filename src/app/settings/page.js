@@ -10,6 +10,7 @@ import Security from "../../components/settings/Security";
 import Notifications from "@/components/settings/Notifications";  
 import Membership from "@/components/settings/Membership";
 import Help from "@/components/settings/Help";
+import About from "@/components/settings/About"
 
 export default function SettingsPage() {
   const router = useRouter();
@@ -71,9 +72,7 @@ export default function SettingsPage() {
         );
       case "About":
         return (
-          <div className="p-8 text-center text-gray-500">
-            About section coming soon...
-          </div>
+          <About/>
         );
       default:
         return <EditProfile userData={userData} />;

@@ -99,7 +99,7 @@ export default function Notifications() {
           className={`inline-block ${circleClasses} transform rounded-full bg-white shadow-lg transition-transform duration-300 ${translateClasses}`}
         />
 
-        {/* Toggle Text untuk size normal */}
+        {/* Toggle Text */}
         {size === "normal" && (
           <>
             <span
@@ -173,7 +173,7 @@ export default function Notifications() {
         </div>
       </div>
 
-      {/* Additional Notif Settings */}
+      {/* Tambahan Notif Settings */}
       {isNotificationsEnabled && (
         <div className="mt-8 space-y-6">
           <h4 className="text-lg font-semibold text-gray-800">
@@ -181,7 +181,7 @@ export default function Notifications() {
           </h4>
 
           <div className="space-y-4">
-            {/* Mood Reminders */}
+            {/* Mood Reminder */}
             <div
               className="flex items-center justify-between p-4 bg-white/50 rounded-2xl hover:bg-white/70 transition-colors cursor-pointer"
               onClick={() => handlePreferenceToggle("dailyMood")}
@@ -201,7 +201,7 @@ export default function Notifications() {
               />
             </div>
 
-            {/* Assessment Reminders */}
+            {/* Assessment Reminder */}
             <div
               className="flex items-center justify-between p-4 bg-white/50 rounded-2xl hover:bg-white/70 transition-colors cursor-pointer"
               onClick={() => handlePreferenceToggle("weeklyAssessment")}
@@ -219,7 +219,7 @@ export default function Notifications() {
               />
             </div>
 
-            {/* Meditation Reminders */}
+            {/* Meditation Reminder */}
             <div
               className="flex items-center justify-between p-4 bg-white/50 rounded-2xl hover:bg-white/70 transition-colors cursor-pointer"
               onClick={() => handlePreferenceToggle("meditation")}

@@ -10,7 +10,7 @@ export default function Membership() {
 
   return (
     <div className="max-w-2xl mx-auto justify-center items-center p-6">
-      {/* Membership Card */}
+      {/* Card */}
       <div className="bg-gradient-to-br from-purple-200 via-blue-100 to-cyan-100 rounded-3xl p-8 shadow-lg text-center">
         {/* Title */}
         <h2 className="font-script text-3xl font-bold text-gray-800 mb-6">
