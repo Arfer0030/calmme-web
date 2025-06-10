@@ -7,6 +7,9 @@ import Sidebar from "../../components/Sidebar";
 import EditProfile from "../../components/settings/EditProfile";
 import TopBar from "../../components/TopBar";
 import Security from "../../components/settings/Security";
+import Notifications from "@/components/settings/Notifications";  
+import Membership from "@/components/settings/Membership";
+import Help from "@/components/settings/Help";
 
 export default function SettingsPage() {
   const router = useRouter();
@@ -16,7 +19,7 @@ export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState("Edit Profile");
   const handleBack = () => {
     router.back();
-  }
+  };
 
   useEffect(() => {
     if (!loading && !user) {
@@ -56,21 +59,15 @@ export default function SettingsPage() {
         return <Security />;
       case "Notifications":
         return (
-          <div className="p-8 text-center text-gray-500">
-            Notification settings coming soon...
-          </div>
+          <Notifications userData={userData} />
         );
       case "Membership":
         return (
-          <div className="p-8 text-center text-gray-500">
-            Membership settings coming soon...
-          </div>
+          <Membership/>
         );
       case "Help":
         return (
-          <div className="p-8 text-center text-gray-500">
-            Help section coming soon...
-          </div>
+          <Help userData={userData} />
         );
       case "About":
         return (
@@ -109,10 +106,10 @@ export default function SettingsPage() {
         <div className="flex-1 flex flex-col overflow-hidden ">
           <div className="backdrop-blur-sm border-gray-200 px-4 sm:px-6 py-4 bg-gradient-to-b from-purple-200">
             <TopBar
-                      onMenuClick={() => setSidebarOpen(true)}
-                      onBackClick={handleBack}
-                      title="Settings"
-                    />
+              onMenuClick={() => setSidebarOpen(true)}
+              onBackClick={handleBack}
+              title="Settings"
+            />
             {/* Tab Navigasi */}
             <div className="flex justify-center">
               <div className="flex space-x-6 sm:space-x-8 md:space-x-12">
@@ -134,7 +131,9 @@ export default function SettingsPage() {
           </div>
           {/* Tab konten */}
           <div className="flex-1 overflow-y-auto p-4 sm:p-6">
-            <div className="max-w-2xl">{renderTabContent()}</div>
+            <div className="max-w-2xl lg:max-w-4xl xl:max-w-6xl mx-auto">
+              {renderTabContent()}
+            </div>
           </div>
         </div>
       </div>

@@ -93,10 +93,10 @@ export default function ConsultationPage() {
     <div className="flex h-screen bg-purple-100 overflow-hidden">
       {/* Sidebar */}
       <Sidebar
-              isOpen={sidebarOpen}
-              onClose={() => setSidebarOpen(false)}
-              userData={userData}
-            />
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+        userData={userData}
+      />
 
       {/* Main konten */}
       <div className="flex-1 flex flex-col overflow-hidden">

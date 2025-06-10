@@ -77,7 +77,15 @@ export default function AppointmentPage() {
   };
 
   const handleMakeAppointment = () => {
-    alert("Go to CalmMe app to make an appointment");
+    try {
+      window.open(
+        "https://play.google.com/store/apps",
+        "_blank",
+        "noopener,noreferrer"
+      );
+    } catch (error) {
+      window.location.href = "https://play.google.com/store/apps";
+    }
   };
 
   if (loading || loadingData) {

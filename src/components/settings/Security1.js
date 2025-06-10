@@ -101,7 +101,7 @@ export default function Security1({ onReauthSuccess }) {
             </div>
           </div>
   
-          {/* Tombol Ganti Password */}
+          {/* Tombol */}
           <div className="text-center pt-2 md:text-right">
             <button
               onClick={handleReauth}
@@ -116,7 +116,7 @@ export default function Security1({ onReauthSuccess }) {
             </button>
           </div>
   
-          {/* Pesan Notifikasi */}
+          {/* Pesan */}
           {message && (
             <div
               className={`p-4 rounded-lg text-center ${

@@ -89,7 +89,6 @@ export default function EditProfile({ userData: initialUserData }) {
       );
 
       if (result.success) {
-        // Close password modal and show verification modal
         setShowPasswordModal(false);
         setShowVerificationModal(true);
         setCurrentPassword("");
@@ -107,7 +106,6 @@ export default function EditProfile({ userData: initialUserData }) {
   const handleVerificationComplete = async () => {
     setMessage("Logging out... Please login with your new email address.");
 
-    // Wait 2 seconds then logout
     setTimeout(async () => {
       await profileService.logoutUser(user.uid);
       router.replace("/auth");
@@ -134,7 +132,6 @@ export default function EditProfile({ userData: initialUserData }) {
         return;
       }
 
-      // Check if email is being updated
       if (changedFields.email) {
         setPendingEmailUpdate(changedFields.email);
         setShowPasswordModal(true);
@@ -142,7 +139,6 @@ export default function EditProfile({ userData: initialUserData }) {
         return;
       }
 
-      // Update other fields (non-email)
       const result = await profileService.updateProfile(
         user.uid,
         changedFields
@@ -164,7 +160,8 @@ export default function EditProfile({ userData: initialUserData }) {
   };
 
   return (
-    <div className="flex flex-col md:flex-row md:space-x-8 lg:space-x-12">
+    <div className="flex flex-col md:flex-row md:space-x-4 lg:space-x-8">
+      {/* Bagian kiri Image */}
       <div className="md:w-1/3 mb-8 md:mb-0">
         <div className="text-center p-6 rounded-2xl sticky top-6">
           <div className="w-24 h-24 bg-gray-400 rounded-full mx-auto mb-4 flex items-center justify-center overflow-hidden">
@@ -197,7 +194,8 @@ export default function EditProfile({ userData: initialUserData }) {
         </div>
       </div>
 
-      <div className="md:w-2/3 space-y-6">
+      {/* Bagian kanan form */}
+      <div className="md:1/3 space-y-6">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Username
@@ -312,7 +310,7 @@ export default function EditProfile({ userData: initialUserData }) {
         )}
       </div>
 
-      {/* Password Confirmation Modal */}
+      {/* Password Confirm Dialog */}
       {showPasswordModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-full max-w-md">
@@ -366,7 +364,7 @@ export default function EditProfile({ userData: initialUserData }) {
         </div>
       )}
 
-      {/* Email Verification Modal */}
+      {/* Email Verif Dialog */}
       {showVerificationModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-full max-w-md text-center">

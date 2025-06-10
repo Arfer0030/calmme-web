@@ -112,7 +112,7 @@ export default function Sidebar({ isOpen, onClose, userData }) {
 
       {/* Sidebar */}
       <div
-        className={`fixed lg:relative inset-y-0 left-0 z-50 w-60 bg-sidebar shadow-lg transform ${
+        className={`fixed lg:relative inset-y-0 left-0 z-50 w-40 bg-sidebar shadow-lg transform ${
           isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         } transition-transform duration-300 ease-in-out flex flex-col`}
       >
@@ -159,7 +159,7 @@ export default function Sidebar({ isOpen, onClose, userData }) {
               }`}
             >
               {item.icon}
-              <span className="font-medium">{item.label}</span>
+              <span className="font-medium text-center">{item.label}</span>
             </button>
           ))}
         </nav>

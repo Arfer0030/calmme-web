@@ -9,7 +9,7 @@ export default function Security() {
 
   const handleReauthSuccess = () => {
     setIsReauthenticated(true);
-    setShowChangePassword(true); // Otomatis pindah ke Security2
+    setShowChangePassword(true); 
   };
 
   const handleBackToAuth = () => {
@@ -20,10 +20,10 @@ export default function Security() {
   return (
     <div className="space-y-6">
       {!showChangePassword ? (
-        // Tampilkan Security1 (Authentication)
+        // Reauth
         <Security1 onReauthSuccess={handleReauthSuccess} />
       ) : (
-        // Tampilkan Security2 (Change Password) dengan tombol back
+        // NeW Password
         <div>
           <Security2 isReauthenticated={isReauthenticated} />
         </div>

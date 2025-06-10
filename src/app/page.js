@@ -20,15 +20,10 @@ export default function HomePage() {
   // loading state
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-100 via-white to-purple-200">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="inline-block bg-yellow-200 rounded-3xl p-6 mb-4">
-            <div className="text-4xl font-bold text-purple-600">CalmMe</div>
-            <div className="w-16 h-16 bg-purple-500 rounded-full mx-auto mt-2 relative animate-pulse">
-              <div className="absolute inset-2 bg-purple-300 rounded-full"></div>
-            </div>
-          </div>
-          <p className="text-purple-600 font-medium">Loading...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
         </div>
       </div>
     );
