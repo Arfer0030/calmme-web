@@ -2,7 +2,7 @@
 import Image from "next/image";
 
 export default function Help({ userData }) {
-  const adminEmail = "Admin@calmme-1c787.firebaseapp.com";
+  const adminEmail = "help.calmme787@gmail.com";
 
   const helpOptions = [
     {

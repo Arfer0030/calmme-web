@@ -146,7 +146,10 @@ export default function HomeContent({
             </div>
           </div>
 
-          <button className="p-2 rounded-full hover:bg-gray-100 relative">
+          <button
+            onClick={() => router.push("/settings")}
+            className="p-2 rounded-full hover:bg-gray-100 relative"
+          >
             <Image
               src="/icons/ic-notification.svg"
               alt="Notifications"
@@ -206,9 +209,9 @@ export default function HomeContent({
                 <span>Upgrade to premium to get more profit</span>
                 <span>now !</span>
               </h3>
-              <button 
-              className="border px-4 py-2 rounded-full font-medium transition-colors"
-              onClick={() => router.push("/subscribe")}
+              <button
+                className="border px-4 py-2 rounded-full font-medium transition-colors"
+                onClick={() => router.push("/subscribe")}
               >
                 Learn more →
               </button>

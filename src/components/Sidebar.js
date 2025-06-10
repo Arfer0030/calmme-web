@@ -167,7 +167,7 @@ export default function Sidebar({ isOpen, onClose, userData }) {
         {/* User Profile */}
         <div className="p-4">
           <div className="flex flex-col items-center space-y-3">
-            <div className="w-18 h-18 bg-purple-200 rounded-full flex items-center justify-center overflow-hidden hover:scale-105 transition-transform cursor-pointer">
+            <div className="w-15 h-15 bg-purple-200 rounded-full flex items-center justify-center overflow-hidden hover:scale-105 transition-transform cursor-pointer">
               {userData?.profilePicture ? (
                 <img
                   src={userData.profilePicture}

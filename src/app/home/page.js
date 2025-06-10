@@ -7,7 +7,8 @@ import ProtectedRoute from "../../components/ProtectedRoute";
 import Sidebar from "../../components/Sidebar";
 import HomeContent from "../../components/HomeContent";
 
-export default function HomePage() {
+export default function UserHomePage() {
+  // Ubah nama function
   const { user, loading } = useAuth();
   const router = useRouter();
   const [userData, setUserData] = useState(null);
@@ -25,6 +26,13 @@ export default function HomePage() {
       if (user) {
         try {
           const data = await authService.getCurrentUserData();
+
+          // Redirect admin to admin dashboard
+          if (data?.role === "admin") {
+            router.replace("/admin");
+            return;
+          }
+
           setUserData(data);
         } catch (error) {
           console.error("Error fetching user data:", error);
@@ -35,7 +43,7 @@ export default function HomePage() {
     };
 
     fetchUserData();
-  }, [user]);
+  }, [user, router]);
 
   return (
     <ProtectedRoute>

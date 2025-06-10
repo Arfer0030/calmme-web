@@ -57,9 +57,9 @@ export default function TopBar({
       )}
 
       {/* Judul Page */}
-      <div className="w-full flex justify-center">
-        <div className="bg-gradient-to-r from-purple-100 to-purple-300 backdrop-blur-sm px-6 py-2 rounded-full">
-          <h1 className="text-lg font-semibold text-gray-800">{title}</h1>
+      <div className="w-full flex justify-between items-start">
+        <div className="px-6 py-2 rounded-full">
+          <h1 className="text-2xl font-bold text-gray-800">{title}</h1>
         </div>
       </div>
     </div>
