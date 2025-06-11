@@ -1,10 +1,10 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "../../../hooks/useAuth";
-import { authService } from "../../../services/auth";
-import Sidebar from "../../../components/Sidebar";
-import TopBar from "../../../components/TopBar"; 
+import { useAuth } from "@/hooks/useAuth";
+import { authService } from "@/services/auth";
+import Sidebar from "@/components/Sidebar";
+import TopBar from "@/components/TopBar";
 
 export default function AssessmentTestPage() {
   const router = useRouter();

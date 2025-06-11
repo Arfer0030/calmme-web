@@ -1,11 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useAuth } from "../../../hooks/useAuth";
-import { authService } from "../../../services/auth";
-import Sidebar from "../../../components/Sidebar";
+import { useAuth } from "@/hooks/useAuth";
+import { authService } from "@/services/auth";
+import Sidebar from "@/components/Sidebar";
 import Image from "next/image";
-import TopBar from "../../../components/TopBar";
+import TopBar from "@/components/TopBar";
 
 export default function AssessmentResultPage() {
   const router = useRouter();
