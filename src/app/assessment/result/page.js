@@ -5,7 +5,7 @@ import { useAuth } from "../../../hooks/useAuth";
 import { authService } from "../../../services/auth";
 import Sidebar from "../../../components/Sidebar";
 import Image from "next/image";
-import TopBar from "../../../components/TopBar"; 
+import TopBar from "../../../components/TopBar";
 
 export default function AssessmentResultPage() {
   const router = useRouter();
@@ -58,7 +58,7 @@ export default function AssessmentResultPage() {
   };
 
   const handleDownload = () => {
-    router.push("/home")
+    router.push("/home");
   };
 
   const handleMeditate = () => {
