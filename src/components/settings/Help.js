@@ -23,23 +23,52 @@ export default function Help({ userData }) {
       icon: "/icons/ic_report.svg",
       subject: "Report Issue - CalmMe App",
     },
+    {
+      id: "psychologist",
+      title: "Psychologist Request",
+      icon: "/icons/ic_psirequest.svg",
+      subject: "Psychologist Request - CalmMe App",
+    },
   ];
 
   const handleHelpOption = (option) => {
-    const body = `Hi CalmMe Support Team,
+    let body = "";
 
-I am contacting you regarding: ${option.title}
-
-User: ${userData?.username || "Unknown User"}
-Email: ${userData?.email || "Not provided"}
-
-Please describe your issue or feedback below:
-[Write your message here]
-
-Thank you for your assistance.
-
-Best regards,
-${userData?.username || "CalmMe User"}`;
+    if (option.id === "psychologist") {
+      body = `Hi CalmMe Support Team,
+  
+  I would like to register as a psychologist on CalmMe.
+  
+  User: ${userData?.username || "Unknown User"}
+  Email: ${userData?.email || "Not provided"}
+  
+  Please find my details below:
+  - Name with Master's Degree: 
+  - NIK:
+  - Member Number of HIMPSI:
+  - Magister Education:
+  - (Attach Scan of SIPP (Surat Izin Praktik Psikologi))
+  
+  Thank you for your assistance.
+  
+  Best regards,
+  ${userData?.username || "CalmMe User"}`;
+    } else {
+      body = `Hi CalmMe Support Team,
+  
+  I am contacting you regarding: ${option.title}
+  
+  User: ${userData?.username || "Unknown User"}
+  Email: ${userData?.email || "Not provided"}
+  
+  Please describe your issue or feedback below:
+  [Write your message here]
+  
+  Thank you for your assistance.
+  
+  Best regards,
+  ${userData?.username || "CalmMe User"}`;
+    }
 
     const mailtoLink = `mailto:${adminEmail}?subject=${encodeURIComponent(
       option.subject
@@ -47,6 +76,7 @@ ${userData?.username || "CalmMe User"}`;
 
     window.location.href = mailtoLink;
   };
+  
 
   return (
     <div className="max-w-2xl mx-auto p-6">
@@ -65,7 +95,7 @@ ${userData?.username || "CalmMe User"}`;
             <div
               key={option.id}
               onClick={() => handleHelpOption(option)}
-              className="bg-white/20 backdrop-blur-sm rounded-2xl p-4 hover:bg-white/30 transition-all duration-300 cursor-pointer group"
+              className="bg-white/20 backdrop-blur-sm rounded-2xl p-2 hover:bg-white/30 transition-all duration-300 cursor-pointer group"
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
@@ -74,18 +104,18 @@ ${userData?.username || "CalmMe User"}`;
                     className={`w-12 h-12  rounded-xl flex items-center justify-center text-white`}
                   >
                     <span className="text-xl">
-                        <Image
-                          src={option.icon}
-                          alt={option.title}
-                          width={48}
-                          height={48}
-                          className="w-8 h-8"
-                          />
+                      <Image
+                        src={option.icon}
+                        alt={option.title}
+                        width={48}
+                        height={48}
+                        className="w-8 h-8"
+                      />
                     </span>
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-lg font-semibold text-gray-800">
+                  <h3 className=" font-semibold text-gray-800">
                     {option.title}
                   </h3>
                 </div>

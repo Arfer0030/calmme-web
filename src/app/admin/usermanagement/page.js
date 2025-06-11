@@ -267,7 +267,7 @@ export default function UserManagementPage({ userData }) {
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                       <button
                         onClick={() => handleRoleChange(user)}
-                        className="text-purple-600 hover:text-purple-900"
+                        className="text-b-ungu hover:text-purple-900"
                       >
                         Change Role
                       </button>

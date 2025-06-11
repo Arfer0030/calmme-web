@@ -111,7 +111,7 @@ export default function SettingsPage() {
             />
             {/* Tab Navigasi */}
             <div className="flex justify-center">
-              <div className="flex space-x-6 sm:space-x-8 md:space-x-12">
+              <div className="flex space-x-6 sm:space-x-8 md:space-x-12 overflow-x-auto scrollbar-hide">
                 {tabs.map((tab) => (
                   <button
                     key={tab}

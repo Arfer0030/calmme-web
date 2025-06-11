@@ -1,4 +1,5 @@
 import "./globals.css";
+import Footer from "@/components/Footer";
 
 export const metadata = {
   title: "CalmMe Web",
@@ -8,7 +9,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className="min-h-screen flex flex-col bg-white">
+        <main className="flex-1 flex flex-col">{children}</main>
+      </body>
     </html>
   );
 }

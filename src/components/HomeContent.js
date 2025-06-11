@@ -203,7 +203,14 @@ export default function HomeContent({
                 <span className="text-xs font-bold px-2 py-1 rounded-full">
                   GO PREMIUM
                 </span>
-                <span className="text-2xl">👑</span>
+                <span className="text-2xl">
+                  <Image
+                    src="/icons/ic_crown.png"
+                    alt="Basic Plan Icon"
+                    width={24}
+                    height={24}
+                  />
+                </span>
               </div>
               <h3 className="text-xl font-bold text-red-900 mb-4 flex flex-col">
                 <span>Upgrade to premium to get more profit</span>

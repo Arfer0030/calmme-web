@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../hooks/useAuth";
 import { authService } from "../../services/auth";
-import AdminSidebar from "../../components/admin/AdminSidebar";
+import AdminSidebar from "../../components/AdminSidebar";
 
 export default function AdminLayout({ children }) {
   const router = useRouter();

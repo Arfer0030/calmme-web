@@ -95,13 +95,13 @@ export default function AuthForm() {
   };
 
   return (
-    <div className="min-h-screen bg-white flex lg:flex-row relative overflow-hidden">
+    <div className="min-h-screen bg-white flex relative overflow-hidden">
       {/* bagian kiri (logo) */}
-      <div className="flex-1 flex items-center justify-center relative z-10 py-8 lg:py-0">
+      <div className="hidden lg:flex flex-1 items-center justify-center relative z-10 py-8">
         <div className="text-center">
           {/* bg logo */}
           <div className="relative mb-8">
-            <div className="w-64 h-56 sm:w-72 sm:h-64 md:w-80 md:h-72 relative">
+            <div className="w-80 h-72 sm:w-72 sm:h-64 md:w-80 md:h-72 relative">
               <Image
                 src="/images/bg-logo.png"
                 alt="Logo Background"
@@ -116,7 +116,7 @@ export default function AuthForm() {
                     src="/images/logo.png"
                     alt="Logo"
                     width={150}
-                    height={1150}
+                    height={150}
                     className="object-contain"
                     sizes="(max-width: 640px) 96px, 164px"
                   />

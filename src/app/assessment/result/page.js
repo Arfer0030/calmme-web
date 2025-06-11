@@ -58,7 +58,7 @@ export default function AssessmentResultPage() {
   };
 
   const handleDownload = () => {
-    alert("Download functionality will be implemented");
+    router.push("/home")
   };
 
   const handleMeditate = () => {
@@ -83,7 +83,7 @@ export default function AssessmentResultPage() {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-100 via-blue-50 to-purple-200 flex">
+    <div className="h-screen bg-gradient-to-br from-purple-100 via-blue-50 to-purple-200 flex">
       {/* Sidebar */}
       <Sidebar
         isOpen={sidebarOpen}
@@ -92,7 +92,7 @@ export default function AssessmentResultPage() {
       />
 
       {/* Main Content */}
-      <div className="flex-1 p-6">
+      <div className="flex-1 p-6 overflow-x-auto">
         {/* Top Bar */}
         <TopBar
           onMenuClick={() => setSidebarOpen(true)}
@@ -146,13 +146,13 @@ export default function AssessmentResultPage() {
             </div>
           </div>
 
-          {/* Download Button */}
+          {/* Button */}
           <div className="text-center">
             <button
               onClick={handleDownload}
               className="bg-b-ungu text-white px-8 py-3 rounded-full font-semibold hover:bg-h-ungu transition-all transform hover:scale-105 shadow-lg"
             >
-              Download Result
+              Back To Home
             </button>
           </div>
 

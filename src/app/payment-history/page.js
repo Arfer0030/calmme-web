@@ -79,7 +79,7 @@ export default function PaymentHistoryPage() {
       />
 
       {/* Main konten */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col overflow-hidden overflow-x-auto">
         {/* Header */}
         <div className="bg-gradient-to-b from-purple-200 to-white backdrop-blur-sm shadow-sm p-6">
           <div className="flex items-center">

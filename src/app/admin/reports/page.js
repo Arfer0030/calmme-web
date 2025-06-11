@@ -1,32 +1,34 @@
 "use client";
 import { useState } from "react";
+import Image from "next/image";
 
 export default function ReportsPage() {
   const [activeFilter, setActiveFilter] = useState("all");
+  const adminEmail = "help.calmme787@gmail.com";
 
   const reportTypes = [
     {
       id: "contact",
       title: "Contact Us",
-      icon: "📧",
+      icon: "/icons/ic_contact.svg",
       subject: "Contact Us - CalmMe App",
     },
     {
       id: "feedback",
       title: "Give Feedback",
-      icon: "💬",
+      icon: "/icons/ic_feedback.svg",
       subject: "Feedback - CalmMe App",
     },
     {
       id: "report",
       title: "Report an Issue",
-      icon: "🚩",
+      icon: "/icons/ic_report.svg",
       subject: "Report Issue - CalmMe App",
     },
     {
       id: "psychologist",
       title: "Psychologist Request",
-      icon: "👨‍⚕️",
+      icon: "/icons/ic_psirequest.svg",
       subject: "Psychologist Request - CalmMe App",
     },
   ];
@@ -80,10 +82,15 @@ export default function ReportsPage() {
               className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow"
             >
               <div className="flex items-center justify-between mb-4">
-                <div className="text-3xl">{type.icon}</div>
-                <span className="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
-                  {type.count} new
-                </span>
+                <div className="text-3xl">
+                  <Image
+                    src={type.icon}
+                    alt={type.title}
+                    width={48}
+                    height={48}
+                    className="w-8 h-8"
+                  />
+                </div>
               </div>
 
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
@@ -113,7 +120,8 @@ export default function ReportsPage() {
           <li>• Review emails with the specific subject line</li>
           <li>• Respond to urgent reports and feedback promptly</li>
           <li>
-            • For psychologist requests, verify credentials before approval after that change the role
+            • For psychologist requests, verify credentials before approval
+            after that change the role
           </li>
         </ul>
       </div>

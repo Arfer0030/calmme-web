@@ -166,7 +166,7 @@ export default function DailyMoodPage() {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-200 via-gray-50 to-purple-200 flex">
+    <div className=" h-screen bg-gradient-to-b from-purple-200 via-gray-50 to-purple-200 flex  scrollbar-hide">
       {/* Sidebar */}
       <Sidebar
         isOpen={sidebarOpen}
@@ -175,7 +175,7 @@ export default function DailyMoodPage() {
       />
 
       {/* Main Content */}
-      <div className="flex-1 p-6">
+      <div className="flex-1 p-6  overflow-x-auto">
         {/* Top Bar */}
         <TopBar
           onMenuClick={() => setSidebarOpen(true)}
@@ -272,7 +272,6 @@ export default function DailyMoodPage() {
               ) : (
                 <div className="overflow-x-auto py-2">
                   <div className="flex items-end justify-center space-x-2 sm:space-x-4 md:space-x-6 h-64 min-w-max px-4">
-                    
                     {moodStats.map((mood, index) => (
                       <div key={index} className="flex flex-col items-center">
                         {/* Label persentase */}
@@ -284,7 +283,7 @@ export default function DailyMoodPage() {
                         <div
                           className={`rounded-t-lg flex flex-col justify-end items-center relative transition-all duration-500 ${
                             moodColors[mood.id] || "bg-gray-300"
-                          } w-6 sm:w-7 md:w-8`} 
+                          } w-6 sm:w-7 md:w-8`}
                           style={{
                             height: `${Math.max(mood.percentage * 1.8, 8)}px`,
                             minHeight: "8px",
@@ -301,13 +300,12 @@ export default function DailyMoodPage() {
                           <img
                             src={mood.icon || ""}
                             alt={mood.label}
-                            className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8" 
+                            className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8"
                           />
                         </div>
 
                         {/* Label mood */}
                         <div className="text-xs text-gray-600 mt-1 text-center w-12 sm:w-14 md:w-16 overflow-hidden">
-                        
                           {mood.label}
                         </div>
                       </div>

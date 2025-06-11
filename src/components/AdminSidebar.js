@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import { authService } from "../../services/auth";
+import { authService } from "../services/auth";
 import Image from "next/image";
 
 export default function AdminSidebar({ isOpen, onClose, userData }) {

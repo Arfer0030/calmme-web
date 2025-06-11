@@ -90,7 +90,7 @@ export default function ConsultationPage() {
   if (!user) return null;
 
   return (
-    <div className="flex h-screen bg-purple-100 overflow-hidden">
+    <div className="flex h-screen bg-gradient-to-b from-purple-200 to-white overflow-hidden">
       {/* Sidebar */}
       <Sidebar
         isOpen={sidebarOpen}
@@ -99,7 +99,7 @@ export default function ConsultationPage() {
       />
 
       {/* Main konten */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col overflow-hidden overflow-x-auto ">
         <div className="flex-1 overflow-y-auto p-6">
           {/* Header */}
           <div className="text-center mb-8">

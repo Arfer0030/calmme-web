@@ -57,7 +57,7 @@ export default function AssessmentIntroPage() {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br  from-purple-100 via-blue-50 to-blue-200 flex">
+    <div className="h-screen bg-gradient-to-br  from-purple-100 via-blue-50 to-blue-200 flex">
       {/* Sidebar */}
       <Sidebar
         isOpen={sidebarOpen}
@@ -66,7 +66,7 @@ export default function AssessmentIntroPage() {
       />
 
       {/* Main Content */}
-      <div className="flex-1 p-6">
+      <div className="flex-1 p-6 overflow-x-auto">
         {/* Top Bar */}
         <TopBar
           onMenuClick={() => setSidebarOpen(true)}
