@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import TopBar from '@/components/TopBar';
 import Sidebar from '@/components/Sidebar';
 import Image from 'next/image';
+import { useAuth } from '@/hooks/useAuth';
+import { authService } from '@/services/auth';
 
 const songs = [
   {
@@ -46,6 +48,25 @@ export default function MeditatePage() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [sidebarOpen, setSidebarOpen] = useState(false); // closed by default
+
+  const { user, loading } = useAuth();
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (user) {
+        try {
+          const data = await authService.getCurrentUserData();
+          setUserData(data);
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      }
+    };
+
+    fetchUserData();
+  }, [user]);
 
   const currentSong = songs[currentSongIndex];
 
@@ -98,7 +119,7 @@ export default function MeditatePage() {
     return () => {
       audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
       audio.removeEventListener('timeupdate', handleTimeUpdate);
-      audio.pause(); // stop audio on unmount
+      audio.pause();
     };
   }, [currentSongIndex]);
 
@@ -110,11 +131,22 @@ export default function MeditatePage() {
 
   return (
     <div className="flex h-screen">
-      <Sidebar />
+      <Sidebar
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+        userData={userData}
+      />
+
       <div className="flex flex-col flex-grow bg-gradient-to-br from-[#e0e9ff] to-[#f6e9ff]">
-        <TopBar title="Meditate Time" />
-        <div className="flex flex-grow p-6 gap-10">
-          {/* Left panel: Player */}
+        <TopBar
+          title="Meditate Time"
+          onMenuClick={() => setSidebarOpen(true)}
+          onBackClick={() => router.push('/home')}
+          showBackButton={true}
+          showMenuButton={true}
+        />
+
+        <div className="flex flex-grow p-6 gap-10 overflow-y-auto">
           <div className="w-1/2 flex flex-col items-center bg-[#d6bdfc] rounded-3xl p-6 shadow-lg">
             <h2 className="text-xl font-semibold text-center mb-4">{currentSong.title}</h2>
             <Image
@@ -161,7 +193,6 @@ export default function MeditatePage() {
             </div>
           </div>
 
-          {/* Right panel: Song List */}
           <div className="w-1/2 bg-white rounded-3xl p-6 shadow-lg overflow-y-auto">
             <h3 className="text-lg font-semibold mb-4">Your Calm Picks</h3>
             <ul className="space-y-4">
