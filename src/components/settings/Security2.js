@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { profileService } from "../../services/profile";
 import Image from "next/image";
-import CustomDialog from "../CustomDialog";
 
 export default function Security2({ isReauthenticated = false }) {
   const [formData, setFormData] = useState({
@@ -15,31 +14,6 @@ export default function Security2({ isReauthenticated = false }) {
     new: false,
     retype: false,
   });
-
-  const [dialog, setDialog] = useState({
-    isOpen: false,
-    title: "",
-    message: "",
-    type: "info",
-  });
-
-  const showDialog = (title, message, type = "info") => {
-    setDialog({
-      isOpen: true,
-      title,
-      message,
-      type,
-    });
-  };
-  
-  const closeDialog = () => {
-    setDialog({
-      isOpen: false,
-      title: "",
-      message: "",
-      type: "info",
-    });
-  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
