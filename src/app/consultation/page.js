@@ -111,11 +111,11 @@ export default function ConsultationPage() {
       {/* Main konten */}
       <div className="flex-1 flex flex-col overflow-hidden overflow-x-auto ">
         <div className="flex-1 overflow-y-auto p-6">
-          {/* Header dengan layout flexbox yang benar */}
+          {/* Header */}
           <div className="mb-8">
-            {/* Container untuk burger button dan title */}
+            {/* Container Button */}
             <div className="flex items-center mb-6">
-              {/* Burger Button - Left */}
+              {/* Button */}
               <button
                 onClick={handleToggleSidebar}
                 className="p-2 hover:bg-white/50 rounded-lg transition-colors z-10"
@@ -124,7 +124,7 @@ export default function ConsultationPage() {
                 }
               >
                 {sidebarOpen ? (
-                  // Icon X untuk close
+                  // Icon close
                   <svg
                     className="w-6 h-6 text-gray-700"
                     fill="none"
@@ -139,7 +139,7 @@ export default function ConsultationPage() {
                     />
                   </svg>
                 ) : (
-                  // Icon burger untuk open
+                  // Icon open
                   <svg
                     className="w-6 h-6 text-gray-700"
                     fill="none"
@@ -156,7 +156,7 @@ export default function ConsultationPage() {
                 )}
               </button>
 
-              {/* Title - Center */}
+              {/* Title */}
               <h1 className="flex-1 text-center text-2xl sm:text-3xl font-bold text-gray-800 px-2">
                 Let's find your psychologist!
               </h1>

@@ -96,7 +96,7 @@ export default function SettingsPage() {
       title="Settings"
       showBackButton
       onBackClick={() => router.push("/home")}
-      backgroundColor="bg-gradient-to-b from-white to-purple-100 to-95% "
+      backgroundColor="bg-gradient-to-b from-purple-100 via-white to-purple-100 to-95% "
       contentClassName="p-0"
     >
       <div className="flex h-screen overflow-hidden">

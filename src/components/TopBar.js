@@ -7,11 +7,11 @@ export default function TopBar({
   showBackButton = true,
   showMenuButton = true,
   className = "",
-  sidebarOpen = false, // Tambah prop untuk status sidebar
+  sidebarOpen = false, 
 }) {
   return (
     <div className={`flex items-center ${className}`}>
-      {/* Button toggle sidebar - berubah icon berdasarkan status */}
+      {/* Button toggle */}
       {showMenuButton && (
         <button
           onClick={onMenuClick}
@@ -19,7 +19,7 @@ export default function TopBar({
           aria-label={sidebarOpen ? "Close sidebar menu" : "Open sidebar menu"}
         >
           {sidebarOpen ? (
-            // Icon X untuk close
+            // Icon close
             <svg
               className="w-6 h-6 text-gray-700"
               fill="none"
@@ -34,7 +34,7 @@ export default function TopBar({
               />
             </svg>
           ) : (
-            // Icon burger untuk open
+            // Icon open
             <svg
               className="w-6 h-6 text-gray-700"
               fill="none"

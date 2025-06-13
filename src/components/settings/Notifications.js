@@ -130,11 +130,11 @@ export default function Notifications() {
   return (
     <div className="max-w-2xl mx-auto justify-center items-center p-6 space-y-8">
       {/* Notif Card */}
-      <div className="bg-gradient-to-br from-purple-200 via-blue-100 to-cyan-100 rounded-3xl p-8 shadow-lg">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-6">
+      <div className="bg-gradient-to-br from-purple-200 via-blue-100 to-cyan-100 rounded-3xl p-8 shadow-lg overflow-hidden">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center space-x-4 sm:space-x-6">
             {/* Icon */}
-            <div className="w-20 h-20 rounded-2xl flex items-center justify-center">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 rounded-2xl flex items-center justify-center">
               <Image
                 src="/images/notif_phone.png"
                 alt="Notification Phone"
@@ -146,7 +146,7 @@ export default function Notifications() {
 
             {/* Text */}
             <div className="flex-1">
-              <h3 className="text-xl font-bold text-gray-800 mb-2">
+              <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-1 sm:mb-2">
                 Turn on web notifications, so you don't miss your updates
                 <span className="text-yellow-500">😊</span>
                 <span className="text-red-500">!!</span>
@@ -154,8 +154,8 @@ export default function Notifications() {
             </div>
           </div>
 
-          {/* Toggle Switch */}
-          <div className="ml-6">
+          {/* Toggle Switch Wrapper */}
+          <div className="mt-4 sm:mt-0 sm:ml-6 flex justify-center sm:justify-start">
             <ToggleSwitch
               isEnabled={isNotificationsEnabled}
               onToggle={handleToggleNotifications}
@@ -209,7 +209,7 @@ export default function Notifications() {
               <div>
                 <h5 className="font-medium text-gray-800">Weekly Assessment</h5>
                 <p className="text-sm text-gray-600">
-                  Remind me to take weekly mental health assessments
+                  Remind me to take weekly assessments
                 </p>
               </div>
               <ToggleSwitch
@@ -229,7 +229,7 @@ export default function Notifications() {
                   Meditation Reminders
                 </h5>
                 <p className="text-sm text-gray-600">
-                  Remind me to meditate and practice mindfulness
+                  Remind me to meditate sometimes
                 </p>
               </div>
               <ToggleSwitch

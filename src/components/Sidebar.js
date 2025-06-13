@@ -37,7 +37,8 @@ export default function Sidebar({ isOpen, onClose, userData }) {
       label: "Payment History",
       icon: "/icons/ic_history.svg",
       path: "/payment-history",
-
+    },
+    {
       id: "settings",
       label: "Settings",
       icon: "/icons/settings.svg",
@@ -70,21 +71,21 @@ export default function Sidebar({ isOpen, onClose, userData }) {
 
   return (
     <>
-      {/* Overlay untuk mobile */}
+      {/* Overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 z-40 md:hidden"
+          className="fixed inset-0 bg-black opacity-15 z-40 md:hidden"
           onClick={onClose}
         />
       )}
 
-      {/* Sidebar - SELALU FIXED untuk semua ukuran layar */}
+      {/* Sidebar */}
       <div
         className={`fixed inset-y-0 left-0 z-50 w-40 bg-sidebar shadow-lg transform ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300 ease-in-out flex flex-col`}
       >
-        {/* Header dengan tombol close */}
+        {/* Header */}
         <div className="flex items-center justify-between pt-6 px-3 pb-2">
           <div className="flex items-center space-x-3">
             <div className="text-2xl font-script font-bold">CalmMe</div>
@@ -130,7 +131,7 @@ export default function Sidebar({ isOpen, onClose, userData }) {
                   src={userData.profilePicture}
                   onClick={() => {
                     router.push("/settings");
-                    onClose(); // Close sidebar setelah navigasi
+                    onClose(); 
                   }}
                   alt="Profile"
                   className="w-full h-full object-cover"
@@ -139,7 +140,7 @@ export default function Sidebar({ isOpen, onClose, userData }) {
                 <svg
                   onClick={() => {
                     router.push("/settings");
-                    onClose(); // Close sidebar setelah navigasi
+                    onClose(); 
                   }}
                   className="w-8 h-8 text-purple-600 cursor-pointer"
                   fill="none"
