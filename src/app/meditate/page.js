@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
@@ -135,8 +135,13 @@ export default function MeditatePage() {
   }, [currentSongIndex]);
 
   return (
-    <DashboardLayout title="Meditate Time" showBackButton onBackClick={() => router.push('/home')}>
-      <div className="flex flex-col lg:flex-row min-h-screen bg-white p-4 gap-6 overflow-y-auto">
+    <DashboardLayout
+      title="Meditate Time"
+      showBackButton
+      onBackClick={() => router.push('/home')}
+      backgroundColor="bg-gradient-to-tr from-[#e5d5fa] via-[#d4e4f9] to-[#f0e4fc]"
+    >
+      <div className="flex flex-col lg:flex-row min-h-screen p-4 gap-6 overflow-y-auto">
         <div className="w-full lg:w-1/2 flex flex-col items-center bg-[#d6bdfc] rounded-3xl p-6 shadow-lg">
           <h2 className="text-xl font-semibold text-center mb-4">{currentSong.title}</h2>
           <Image
