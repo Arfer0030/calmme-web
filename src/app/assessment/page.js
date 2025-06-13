@@ -4,15 +4,15 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { authService } from "@/services/auth";
 import Sidebar from "@/components/Sidebar";
-import TopBar from "@/components/TopBar";
+import Image from "next/image";
+import TopBar from "@/components/TopBar"; 
 
-export default function AssessmentTestPage() {
+
+export default function AssessmentIntroPage() {
   const router = useRouter();
   const { user, loading } = useAuth();
   const [userData, setUserData] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [answers, setAnswers] = useState({});
-  const [currentQuestion, setCurrentQuestion] = useState(0);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -35,51 +35,13 @@ export default function AssessmentTestPage() {
     fetchUserData();
   }, [user]);
 
-  const questions = [
-    "Feeling restless, anxious, or extremely tense",
-    "Unable to stop or control worry",
-    "Worrying too much about things",
-    "Hard to relax",
-    "Very restless making it hard to sit still",
-    "Being easily irritated or irritable",
-    "Feeling afraid as if something terrible might happen",
-  ];
-
-  const options = [
-    { label: "Never", value: 0 },
-    { label: "Several days", value: 1 },
-    { label: "More than half the days", value: 2 },
-    { label: "Nearly every days", value: 3 },
-  ];
-
-  const handleAnswer = (questionIndex, value) => {
-    setAnswers((prev) => ({
-      ...prev,
-      [questionIndex]: value,
-    }));
-  };
-
-  const handleNext = () => {
-    if (currentQuestion < questions.length - 1) {
-      setCurrentQuestion(currentQuestion + 1);
-    } else {
-      const totalScore = Object.values(answers).reduce(
-        (sum, value) => sum + value,
-        0
-      );
-      router.push(`/assessment/result?score=${totalScore}`);
-    }
+  const handleStartTest = () => {
+    router.push("/assessment/test");
   };
 
   const handleBack = () => {
-    if (currentQuestion > 0) {
-      setCurrentQuestion(currentQuestion - 1);
-    } else {
-      router.back();
-    }
+    router.push("/home");
   };
-
-  const progress = ((currentQuestion + 1) / questions.length) * 100;
 
   if (loading) {
     return (
@@ -95,7 +57,7 @@ export default function AssessmentTestPage() {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-100 via-blue-50 to-blue-200 flex">
+    <div className="h-screen bg-gradient-to-br  from-purple-100 via-blue-50 to-blue-200 flex">
       {/* Sidebar */}
       <Sidebar
         isOpen={sidebarOpen}
@@ -104,7 +66,7 @@ export default function AssessmentTestPage() {
       />
 
       {/* Main Content */}
-      <div className="flex-1 p-6">
+      <div className="flex-1 p-6 overflow-x-auto">
         {/* Top Bar */}
         <TopBar
           onMenuClick={() => setSidebarOpen(true)}
@@ -112,65 +74,103 @@ export default function AssessmentTestPage() {
           title="Self-Assessment Test"
         />
 
-        {/* Progress Bar */}
-        <div className="max-w-4xl mx-auto mb-8">
-          <div className="bg-yellow-100 h-2 rounded-full">
-            <div
-              className="bg-yellow-400 h-2 rounded-full transition-all duration-300"
-              style={{ width: `${progress}%` }}
-            ></div>
-          </div>
-          <div className="text-right mt-2">
-            <span className="text-sm text-yellow-600 font-medium">
-              Test Questions
-            </span>
-          </div>
-        </div>
+        {/* Card informasi */}
+        <div className="max-w-2xl mx-auto px-4 py-8">
+          <div className="bg-card-biru rounded-3xl p-5 sm:p-6 md:p-8 text-white relative ">
+            {/* Gambar brain */}
+            <div className="absolute -bottom-17 -left-13 hidden md:block">
+              <Image
+                src="/images/as-brain.png"
+                alt="Brain image"
+                width={140}
+                height={140}
+              />
+            </div>
 
-        {/* Question Content */}
-        <div className="max-w-4xl mx-auto bg-white/80 backdrop-blur-sm rounded-3xl p-8">
-          <div className="space-y-8">
-            <div className="bg-yellow-50 rounded-2xl p-6">
-              <h2 className="text-xl font-semibold text-gray-800 mb-6">
-                {currentQuestion + 1}. {questions[currentQuestion]}
+            <div className="relative z-10 ">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-center">
+                Let's Start Test!
               </h2>
+              <p className="text-base sm:text-lg mb-6 opacity-90 text-center sm:text-left">
+                Be honest, be calm, and trust yourself. Self-awareness is
+                <br />
+                the first step to growth.
+              </p>
 
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {options.map((option, index) => (
-                  <button
-                    key={index}
-                    onClick={() => handleAnswer(currentQuestion, option.value)}
-                    className={`p-4 rounded-2xl text-center font-medium transition-all ${
-                      answers[currentQuestion] === option.value
-                        ? "bg-gray-500 text-white shadow-lg scale-105"
-                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                    }`}
-                  >
-                    {option.label}
-                  </button>
-                ))}
+              <div className="space-y-4 text-sm sm:text-base">
+                <div>
+                  <span className="font-semibold">
+                    1. Read the question carefully.
+                  </span>
+                  <div className="text-sm opacity-80 ml-4">
+                    There are 7 questions that must be answered
+                  </div>
+                </div>
+
+                <div>
+                  <span className="font-semibold">
+                    2. Reflect on your real experiences.
+                  </span>
+                  <div className="text-sm opacity-80 ml-4">
+                    Think about how you've reacted, behaved, or felt in similar
+                    situations in real life.
+                  </div>
+                </div>
+
+                <div>
+                  <span className="font-semibold">
+                    3. Trust your first instinct.
+                  </span>
+                  <div className="text-sm opacity-80 ml-4">
+                    Usually, your first reaction is the most accurate one. Don't
+                    overthink.
+                  </div>
+                </div>
+
+                <div>
+                  <span className="font-semibold">
+                    4. Choose the option that feels most true to you.
+                  </span>
+                  <div className="text-sm opacity-80 ml-4">
+                    Pick the answer that best represents your usual thoughts,
+                    feelings, or behavior even if it doesn't sound "ideal."
+                  </div>
+                </div>
+
+                <div>
+                  <span className="font-semibold">
+                    5. Avoid choosing based on what you think is expected.
+                  </span>
+                  <div className="text-sm opacity-80 ml-4">
+                    Be true to yourself. This assessment is for your own
+                    growth—not for pleasing others.
+                  </div>
+                </div>
+
+                <div>
+                  <span className="font-semibold">
+                    6. Stay relaxed and go at your own pace.
+                  </span>
+                  <div className="text-sm opacity-80 ml-4">
+                    There's no time pressure. The goal is clarity, not speed.
+                  </div>
+                </div>
+              </div>
+
+              <div className="text-right mt-6">
+                <span className="text-lg font-script">CalmMe</span>
               </div>
             </div>
+          </div>
 
-            {/* Navigation */}
-            <div className="flex justify-between pt-6">
-              <button
-                onClick={handleBack}
-                className="px-6 py-3 bg-gray-200 text-gray-700 rounded-full font-medium hover:bg-gray-300 transition-colors"
-              >
-                Previous
-              </button>
-
-              <button
-                onClick={handleNext}
-                disabled={answers[currentQuestion] === undefined}
-                className="px-6 py-3 bg-b-ungu text-white rounded-full font-medium hover:bg-purple-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {currentQuestion === questions.length - 1
-                  ? "Finish Test"
-                  : "Next"}
-              </button>
-            </div>
+          {/* Start Test Button */}
+          <div className="text-center mt-8">
+            <button
+              onClick={handleStartTest}
+              className="bg-b-ungu text-white px-12 py-4 rounded-full text-lg font-semibold hover:from-purple-600 hover:to-purple-700 transition-all transform hover:scale-105 shadow-lg"
+            >
+              Start Test
+            </button>
           </div>
         </div>
       </div>
