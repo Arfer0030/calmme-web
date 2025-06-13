@@ -1,20 +1,21 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { useAuth } from "../../hooks/useAuth";
-import { authService } from "../../services/auth";
-import { subscriptionService } from "../../services/subscription";
-import Sidebar from "../../components/Sidebar";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useAuth } from "../../../hooks/useAuth";
+import { authService } from "../../../services/auth";
+import { subscriptionService } from "../../../services/subscription";
+import Sidebar from "../../../components/Sidebar";
 import Image from "next/image";
 
-export default function SubscribePage() {
+export default function PaymentPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { user, loading } = useAuth();
   const [userData, setUserData] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState(null);
-  const [pendingAppointments, setPendingAppointments] = useState([]);
-  const [loadingCheck, setLoadingCheck] = useState(false);
+  const [selectedPayment, setSelectedPayment] = useState("");
+  const [paymentId, setPaymentId] = useState("");
+  const [paymentType, setPaymentType] = useState("");
 
   useEffect(() => {
     if (!loading && !user) {
@@ -37,72 +38,55 @@ export default function SubscribePage() {
     fetchUserData();
   }, [user]);
 
-  const handlePlanSelect = (plan) => {
-    setSelectedPlan(plan);
+  useEffect(() => {
+    const paymentIdParam = searchParams.get("paymentId");
+    const typeParam = searchParams.get("type");
+
+    if (paymentIdParam && typeParam) {
+      setPaymentId(paymentIdParam);
+      setPaymentType(typeParam);
+    } else {
+      router.push("/subscribe");
+    }
+  }, [searchParams, router]);
+
+  const paymentMethods = [
+    {
+      id: "bank",
+      name: "Bank",
+      icon: "/icons/ic_bank.png",
+    },
+    {
+      id: "shopeepay",
+      name: "Shopeepay",
+      icon: "/icons/ic_spay.png",
+    },
+    {
+      id: "dana",
+      name: "Dana",
+      icon: "/icons/ic_dana.png",
+    },
+  ];
+
+  const handlePaymentSelect = (method) => {
+    setSelectedPayment(method);
   };
 
-  // Tambahkan di bagian handleBuyNow function
-  const handleBuyNow = async () => {
-    if (!selectedPlan) return;
-
-    setLoadingCheck(true);
+  const handleAdd = async () => {
+    if (!selectedPayment || !paymentId) return;
 
     try {
-      if (selectedPlan === "basic") {
-        // Check pending appointments
-        const result = await subscriptionService.checkPendingAppointments(
-          user.uid
+      const result = await subscriptionService.updatePaymentMethod(
+        paymentId,
+        selectedPayment
+      );
+      if (result.success) {
+        router.push(
+          `/subscribe/confirmation?paymentId=${paymentId}&type=${paymentType}`
         );
-        if (result.success && result.data.length > 0) {
-          // Create consultation payment for latest pending appointment
-          const latestAppointment = result.data[0];
-          const paymentResult =
-            await subscriptionService.createConsultationPayment(
-              user.uid,
-              latestAppointment.id
-            );
-
-          if (paymentResult.success) {
-            router.push(
-              `/subscribe/payment?paymentId=${paymentResult.paymentId}&type=consultation`
-            );
-          } else {
-            alert(paymentResult.error);
-          }
-        } else {
-          alert(
-            "No pending appointments found. Please book an appointment first."
-          );
-        }
-      } else if (selectedPlan === "plus") {
-        // Check user subscription status first
-        const statusResult =
-          await subscriptionService.checkUserSubscriptionStatus(user.uid);
-        if (
-          statusResult.success &&
-          statusResult.subscriptionStatus === "active"
-        ) {
-          alert(
-            "You already have an active subscription. Please wait until your current subscription expires before purchasing a new one."
-          );
-          return;
-        }
-
-        // Create subscription
-        const result = await subscriptionService.createSubscription(user.uid);
-        if (result.success) {
-          router.push(
-            `/subscribe/payment?paymentId=${result.paymentId}&type=subscription`
-          );
-        } else {
-          alert(result.error);
-        }
       }
     } catch (error) {
-      console.error("Error processing plan selection:", error);
-      alert("An error occurred. Please try again.");
-    } finally {
-      setLoadingCheck(false);
+      console.error("Error updating payment method:", error);
     }
   };
 
@@ -163,9 +147,9 @@ export default function SubscribePage() {
               <div className="w-8 h-8 bg-b-ungu rounded-full flex items-center justify-center">
                 <span className="text-white text-sm font-bold">1</span>
               </div>
-              <div className="flex-1 h-1 bg-purple-300 mx-2"></div>
-              <div className="w-8 h-8 bg-purple-300 rounded-full flex items-center justify-center">
-                <span className="text-gray-600 text-sm font-bold">2</span>
+              <div className="flex-1 h-1 bg-b-ungu mx-2"></div>
+              <div className="w-8 h-8 bg-b-ungu rounded-full flex items-center justify-center">
+                <span className="text-white text-sm font-bold">2</span>
               </div>
               <div className="flex-1 h-1 bg-purple-300 mx-2"></div>
               <div className="w-8 h-8 bg-purple-300 rounded-full flex items-center justify-center">
@@ -175,87 +159,69 @@ export default function SubscribePage() {
           </div>
         </div>
 
-        {/* Konten */}
+        {/* Content */}
         <div className="flex-1 overflow-y-auto p-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-2">
-              Choose
+          <div className="max-w-2xl mx-auto">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-2 text-center">
+              Payment
             </h2>
-            <p className="text-gray-600 mb-8">
-              Unlock 1x or monthly consultations by subscribing now, and enjoy
-              <br />
-              exclusive sessions with top-rated psychologists.
+            <p className="text-gray-600 mb-8 text-center">
+              Select your payment method
             </p>
 
-            {/* Card plan */}
-            <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto mb-8">
-              {/* Basic plan */}
-              <div
-                className={`bg-gradient-to-br from-purple-200 to-cyan-100 rounded-3xl p-6 cursor-pointer transition-all ${
-                  selectedPlan === "basic"
-                    ? "ring-4 ring-b-ungu scale-105"
-                    : "hover:scale-105"
-                }`}
-                onClick={() => handlePlanSelect("basic")}
-              >
-                <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-lg font-bold text-b-ungu text-left">
-                    BASIC
-                  </h3>
-                  <Image
-                    src="/icons/ic_crown.png"
-                    alt="Basic Plan Icon"
-                    width={24}
-                    height={24}
-                  />
-                </div>
-                <div className="text-left">
-                  <div className="text-2xl font-bold text-b-ungu mb-1">
-                    Rp 50.000,00 / consultation
+            {/* Metode payment */}
+            <div className="space-y-4 mb-8">
+              {paymentMethods.map((method) => (
+                <button
+                  key={method.id}
+                  onClick={() => handlePaymentSelect(method.id)}
+                  className={`w-full flex items-center justify-between p-4 rounded-2xl transition-all ${
+                    selectedPayment === method.id
+                      ? "bg-white shadow-lg ring-2 ring-purple-500"
+                      : "bg-gray-200 hover:bg-gray-300"
+                  }`}
+                >
+                  <div className="flex items-center space-x-4">
+                    <div className="text-2xl">
+                      <Image
+                        src={method.icon}
+                        alt={method.name}
+                        width={40}
+                        height={20}
+                        className="w-12 h-5 object-contain"
+                      />
+                    </div>
+                    <span className="font-medium text-b-ungu">
+                      {method.name}
+                    </span>
                   </div>
-                  <p className="text-sm text-b-ungu">
-                    Enjoy 1x consultation access.
-                  </p>
-                </div>
-              </div>
-
-              {/* Plus plan */}
-              <div
-                className={`bg-gradient-to-br from-cyan-200 to-yellow-100 rounded-3xl p-6 cursor-pointer transition-all ${
-                  selectedPlan === "plus"
-                    ? "ring-4 ring-cyan-700 scale-105"
-                    : "hover:scale-105"
-                }`}
-                onClick={() => handlePlanSelect("plus")}
-              >
-                <div className="flex justify-between items-start mb-4">
-                  <h3 className="text-lg font-bold text-cyan-700">PLUS</h3>
-                  <Image
-                    src="/icons/ic_crown.png"
-                    alt="Basic Plan Icon"
-                    width={24}
-                    height={24}
-                  />
-                </div>
-                <div className="text-left">
-                  <div className="text-2xl font-bold text-cyan-700 mb-1">
-                    Rp 275.000,00 / month
-                  </div>
-                  <p className="text-sm text-cyan-700">
-                    Get 1 year of unlimited consultation access.
-                  </p>
-                </div>
-              </div>
+                  <svg
+                    className="w-6 h-6 text-b-ungu"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </button>
+              ))}
             </div>
 
-            {/* Button Buy Now */}
-            <button
-              onClick={handleBuyNow}
-              disabled={!selectedPlan || loadingCheck}
-              className="bg-b-ungu text-white px-12 py-3 rounded-full font-semibold hover:bg-h-ungu transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {loadingCheck ? "Processing..." : "BUY NOW"}
-            </button>
+            {/* Button Add */}
+            <div className="text-center">
+              <button
+                onClick={handleAdd}
+                disabled={!selectedPayment}
+                className="bg-b-ungu text-white px-12 py-3 rounded-full font-semibold hover:bg-purple-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                ADD
+              </button>
+            </div>
           </div>
         </div>
       </div>

@@ -15,6 +15,10 @@ export default function UserHomePage() {
   const [loadingUserData, setLoadingUserData] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  const handleToggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
+
   useEffect(() => {
     if (!loading && !user) {
       router.replace("/auth");
@@ -49,18 +53,25 @@ export default function UserHomePage() {
     <ProtectedRoute>
       <div className="flex h-screen bg-gray-50">
         {/* Sidebar */}
-        <Sidebar
-          isOpen={sidebarOpen}
-          onClose={() => setSidebarOpen(false)}
-          userData={userData}
-        />
+        <div
+          className={`transition-all duration-300 ease-in-out ${
+            sidebarOpen ? "w-40" : "w-0"
+          }`}
+        >
+          <Sidebar
+            isOpen={sidebarOpen}
+            onClose={() => setSidebarOpen(false)}
+            userData={userData}
+          />
+        </div>
 
         {/* Main Content */}
         <div className="flex-1 flex flex-col overflow-hidden">
           <HomeContent
             userData={userData}
             loadingUserData={loadingUserData}
-            onMenuClick={() => setSidebarOpen(true)}
+            onMenuClick={handleToggleSidebar}
+            sidebarOpen={sidebarOpen}
           />
         </div>
       </div>
