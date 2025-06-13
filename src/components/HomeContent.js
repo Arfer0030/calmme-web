@@ -9,6 +9,7 @@ export default function HomeContent({
   userData,
   loadingUserData,
   onMenuClick,
+  sidebarOpen = false,
 }) {
   const [greeting, setGreeting] = useState("");
   const [selectedMood, setSelectedMood] = useState(null);
@@ -122,31 +123,55 @@ export default function HomeContent({
           <div className="flex items-center space-x-4">
             <button
               onClick={onMenuClick}
-              className="p-2 rounded-md hover:bg-gray-100"
+              className="p-2 hover:bg-white/50 rounded-lg transition-colors mr-4 z-10"
+              aria-label={
+                sidebarOpen ? "Close sidebar menu" : "Open sidebar menu"
+              }
             >
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
+              {sidebarOpen ? (
+                // Icon X untuk close
+                <svg
+                  className="w-6 h-6 text-gray-700"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              ) : (
+                // Icon burger untuk open
+                <svg
+                  className="w-6 h-6 text-gray-700"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                </svg>
+              )}
             </button>
             <div>
-              <h1 className="text-xl font-semibold text-gray-900">
+              <h1 className="text-2xl font-semibold text-gray-900">
                 {greeting},{" "}
                 {loadingUserData ? "Loading..." : userData?.username || "User"}!
               </h1>
             </div>
           </div>
 
-          <button className="p-2 rounded-full hover:bg-gray-100 relative">
+          <button
+            onClick={() => router.push("/settings")}
+            className="p-2 rounded-full hover:bg-gray-100 relative"
+          >
             <Image
               src="/icons/ic-notification.svg"
               alt="Notifications"
@@ -200,15 +225,22 @@ export default function HomeContent({
                 <span className="text-xs font-bold px-2 py-1 rounded-full">
                   GO PREMIUM
                 </span>
-                <span className="text-2xl">👑</span>
+                <span className="text-2xl">
+                  <Image
+                    src="/icons/ic_crown.png"
+                    alt="Basic Plan Icon"
+                    width={24}
+                    height={24}
+                  />
+                </span>
               </div>
               <h3 className="text-xl font-bold text-red-900 mb-4 flex flex-col">
                 <span>Upgrade to premium to get more profit</span>
                 <span>now !</span>
               </h3>
-              <button 
-              className="border px-4 py-2 rounded-full font-medium transition-colors"
-              onClick={() => router.push("/subscribe")}
+              <button
+                className="border px-4 py-2 rounded-full font-medium transition-colors"
+                onClick={() => router.push("/subscribe")}
               >
                 Learn more →
               </button>

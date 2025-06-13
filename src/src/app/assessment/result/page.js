@@ -1,22 +1,21 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useAuth } from "../../../hooks/useAuth";
-import { authService } from "../../../services/auth";
-import Sidebar from "../../../components/Sidebar";
+import { useAuth } from "@/hooks/useAuth";
+import { authService } from "@/services/auth";
+import Sidebar from "@/components/Sidebar";
 import Image from "next/image";
-import TopBar from "../../../components/TopBar";
+import TopBar from "@/components/TopBar";
 
-export default function AssessmentResultContent() {
+export default function AssessmentResultPage() {
   const router = useRouter();
-  const searchParams = useSearchParams(); // Sekarang sudah dibungkus Suspense
+  const searchParams = useSearchParams();
   const { user, loading } = useAuth();
   const [userData, setUserData] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [score, setScore] = useState(0);
   const [result, setResult] = useState("");
 
-  // ... rest of your existing code tetap sama
   useEffect(() => {
     if (!loading && !user) {
       router.replace("/auth");
@@ -59,7 +58,7 @@ export default function AssessmentResultContent() {
   };
 
   const handleDownload = () => {
-    alert("Download functionality will be implemented");
+    router.push("/home");
   };
 
   const handleMeditate = () => {
@@ -84,7 +83,7 @@ export default function AssessmentResultContent() {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-100 via-blue-50 to-purple-200 flex">
+    <div className="h-screen bg-gradient-to-br from-purple-100 via-blue-50 to-purple-200 flex">
       {/* Sidebar */}
       <Sidebar
         isOpen={sidebarOpen}
@@ -140,19 +139,20 @@ export default function AssessmentResultContent() {
               <h2 className="text-3xl font-bold mb-4">Your Result :</h2>
               <div className="text-6xl font-bold mb-2">{score}</div>
               <div className="text-2xl font-semibold mb-4">{result}</div>
+
               <div className="text-center text-gray-400">
                 <span className="font-script text-lg">CalmMe</span>
               </div>
             </div>
           </div>
 
-          {/* Download Button */}
+          {/* Button */}
           <div className="text-center">
             <button
               onClick={handleDownload}
               className="bg-b-ungu text-white px-8 py-3 rounded-full font-semibold hover:bg-h-ungu transition-all transform hover:scale-105 shadow-lg"
             >
-              Download Result
+              Back To Home
             </button>
           </div>
 
@@ -163,7 +163,7 @@ export default function AssessmentResultContent() {
             </h3>
           </div>
 
-          {/* Card rekomendasi */}
+          {/* Card rkeomendasi */}
           <div className="grid md:grid-cols-2 gap-6">
             {/* Rekomendasi meditate */}
             <div

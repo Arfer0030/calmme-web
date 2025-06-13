@@ -124,10 +124,12 @@ export default function PsychologistCard({ psychologist, onAppointment }) {
         </div>
 
         {/* bagian kanan, appointment button */}
-        <div>
+        <div >
           <button
-            onClick={() => router.push(`/consultation/appointment?id=${psychologist.id}`)}
-            className="bg-b-ungu hover:bg-h-ungu text-white px-6 py-2 rounded-full font-medium transition-colors duration-200 shadow-md hover:shadow-lg"
+            onClick={() =>
+              router.push(`/consultation/appointment?id=${psychologist.id}`)
+            }
+            className="bg-b-ungu hover:bg-h-ungu text-white px-4 sm:px-6 py-2 rounded-full font-medium text-sm sm:text-base transition-colors duration-200 shadow-md hover:shadow-lg"
           >
             Appointment
           </button>

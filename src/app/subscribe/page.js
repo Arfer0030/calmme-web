@@ -5,6 +5,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { authService } from "../../services/auth";
 import { subscriptionService } from "../../services/subscription";
 import Sidebar from "../../components/Sidebar";
+import CustomDialog from "../../components/CustomDialog";
 import Image from "next/image";
 
 export default function SubscribePage() {
@@ -15,6 +16,35 @@ export default function SubscribePage() {
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [pendingAppointments, setPendingAppointments] = useState([]);
   const [loadingCheck, setLoadingCheck] = useState(false);
+
+  const [dialog, setDialog] = useState({
+    isOpen: false,
+    title: "",
+    message: "",
+    type: "info",
+  });
+
+  const handleToggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
+
+  const showDialog = (title, message, type = "info") => {
+    setDialog({
+      isOpen: true,
+      title,
+      message,
+      type,
+    });
+  };
+
+  const closeDialog = () => {
+    setDialog({
+      isOpen: false,
+      title: "",
+      message: "",
+      type: "info",
+    });
+  };
 
   useEffect(() => {
     if (!loading && !user) {
@@ -41,7 +71,6 @@ export default function SubscribePage() {
     setSelectedPlan(plan);
   };
 
-  // Tambahkan di bagian handleBuyNow function
   const handleBuyNow = async () => {
     if (!selectedPlan) return;
 
@@ -49,12 +78,10 @@ export default function SubscribePage() {
 
     try {
       if (selectedPlan === "basic") {
-        // Check pending appointments
         const result = await subscriptionService.checkPendingAppointments(
           user.uid
         );
         if (result.success && result.data.length > 0) {
-          // Create consultation payment for latest pending appointment
           const latestAppointment = result.data[0];
           const paymentResult =
             await subscriptionService.createConsultationPayment(
@@ -67,40 +94,42 @@ export default function SubscribePage() {
               `/subscribe/payment?paymentId=${paymentResult.paymentId}&type=consultation`
             );
           } else {
-            alert(paymentResult.error);
+            showDialog("Payment Error", paymentResult.error, "error");
           }
         } else {
-          alert(
-            "No pending appointments found. Please book an appointment first."
+          showDialog(
+            "No Appointments Found",
+            "No pending appointments found. Please book an appointment first.",
+            "warning"
           );
         }
       } else if (selectedPlan === "plus") {
-        // Check user subscription status first
         const statusResult =
           await subscriptionService.checkUserSubscriptionStatus(user.uid);
         if (
           statusResult.success &&
           statusResult.subscriptionStatus === "active"
         ) {
-          alert(
-            "You already have an active subscription. Please wait until your current subscription expires before purchasing a new one."
+          showDialog(
+            "Active Subscription",
+            "You already have an active subscription. Please wait until your current subscription expires before purchasing a new one.",
+            "warning"
           );
           return;
         }
 
-        // Create subscription
         const result = await subscriptionService.createSubscription(user.uid);
         if (result.success) {
           router.push(
             `/subscribe/payment?paymentId=${result.paymentId}&type=subscription`
           );
         } else {
-          alert(result.error);
+          showDialog("Subscription Error", result.error, "error");
         }
       }
     } catch (error) {
       console.error("Error processing plan selection:", error);
-      alert("An error occurred. Please try again.");
+      showDialog("Error", "An error occurred. Please try again.", "error");
     } finally {
       setLoadingCheck(false);
     }
@@ -122,37 +151,68 @@ export default function SubscribePage() {
   return (
     <div className="flex h-screen bg-gradient-to-b from-purple-200 via-gray-100 to-purple-200 overflow-hidden">
       {/* Sidebar */}
-      <Sidebar
-        isOpen={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
-        userData={userData}
-      />
+      <div
+        className={`transition-all duration-300 ease-in-out ${
+          sidebarOpen ? "w-40" : "w-0"
+        }`}
+      >
+        <Sidebar
+          isOpen={sidebarOpen}
+          onClose={() => setSidebarOpen(false)}
+          userData={userData}
+        />
+      </div>
 
       {/* Main konten */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col p-5 overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-center">
-          <button
-            onClick={() => setSidebarOpen(true)}
-            className="lg:hidden absolute left-6 p-2 hover:bg-gray-100 rounded-lg transition-colors"
-          >
-            <svg
-              className="w-6 h-6 text-gray-700"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+        <div className="mb-8">
+          {/* Container */}
+          <div className="flex items-center mb-6">
+            {/* Button */}
+            <button
+              onClick={handleToggleSidebar}
+              className="p-2 hover:bg-white/50 rounded-lg transition-colors z-10"
+              aria-label={
+                sidebarOpen ? "Close sidebar menu" : "Open sidebar menu"
+              }
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
-          </button>
+              {sidebarOpen ? (
+                <svg
+                  className="w-6 h-6 text-gray-700"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  className="w-6 h-6 text-gray-700"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                </svg>
+              )}
+            </button>
 
-          <div className="bg-purple-200 px-8 py-2 rounded-full">
-            <h1 className="text-2xl font-bold text-gray-800">Subscribe</h1>
+            {/* Title */}
+            <h1 className="flex-1 text-center text-2xl sm:text-3xl font-bold text-gray-800 px-2">
+              Subscribe
+            </h1>
+            <div className="w-10" aria-hidden="true"></div>
           </div>
         </div>
 
@@ -232,7 +292,7 @@ export default function SubscribePage() {
                   <h3 className="text-lg font-bold text-cyan-700">PLUS</h3>
                   <Image
                     src="/icons/ic_crown.png"
-                    alt="Basic Plan Icon"
+                    alt="Plus Plan Icon"
                     width={24}
                     height={24}
                   />
@@ -259,6 +319,16 @@ export default function SubscribePage() {
           </div>
         </div>
       </div>
+
+      {/* Custom Dialog */}
+      <CustomDialog
+        isOpen={dialog.isOpen}
+        onClose={closeDialog}
+        title={dialog.title}
+        message={dialog.message}
+        type={dialog.type}
+        buttonText="OK"
+      />
     </div>
   );
 }

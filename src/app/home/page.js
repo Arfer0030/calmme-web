@@ -7,12 +7,17 @@ import ProtectedRoute from "../../components/ProtectedRoute";
 import Sidebar from "../../components/Sidebar";
 import HomeContent from "../../components/HomeContent";
 
-export default function HomePage() {
+export default function UserHomePage() {
+  // Ubah nama function
   const { user, loading } = useAuth();
   const router = useRouter();
   const [userData, setUserData] = useState(null);
   const [loadingUserData, setLoadingUserData] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const handleToggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
 
   useEffect(() => {
     if (!loading && !user) {
@@ -25,6 +30,13 @@ export default function HomePage() {
       if (user) {
         try {
           const data = await authService.getCurrentUserData();
+
+          // Redirect admin to admin dashboard
+          if (data?.role === "admin") {
+            router.replace("/admin");
+            return;
+          }
+
           setUserData(data);
         } catch (error) {
           console.error("Error fetching user data:", error);
@@ -35,24 +47,31 @@ export default function HomePage() {
     };
 
     fetchUserData();
-  }, [user]);
+  }, [user, router]);
 
   return (
     <ProtectedRoute>
       <div className="flex h-screen bg-gray-50">
         {/* Sidebar */}
-        <Sidebar
-          isOpen={sidebarOpen}
-          onClose={() => setSidebarOpen(false)}
-          userData={userData}
-        />
+        <div
+          className={`transition-all duration-300 ease-in-out ${
+            sidebarOpen ? "w-40" : "w-0"
+          }`}
+        >
+          <Sidebar
+            isOpen={sidebarOpen}
+            onClose={() => setSidebarOpen(false)}
+            userData={userData}
+          />
+        </div>
 
         {/* Main Content */}
         <div className="flex-1 flex flex-col overflow-hidden">
           <HomeContent
             userData={userData}
             loadingUserData={loadingUserData}
-            onMenuClick={() => setSidebarOpen(true)}
+            onMenuClick={handleToggleSidebar}
+            sidebarOpen={sidebarOpen}
           />
         </div>
       </div>

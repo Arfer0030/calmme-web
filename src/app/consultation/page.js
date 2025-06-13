@@ -17,6 +17,10 @@ export default function ConsultationPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [loadingPsychologists, setLoadingPsychologists] = useState(true);
 
+  const handleToggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
+
   useEffect(() => {
     if (!loading && !user) {
       router.replace("/auth");
@@ -90,41 +94,74 @@ export default function ConsultationPage() {
   if (!user) return null;
 
   return (
-    <div className="flex h-screen bg-purple-100 overflow-hidden">
+    <div className="flex h-screen bg-gradient-to-b from-purple-200 to-white overflow-hidden">
       {/* Sidebar */}
-      <Sidebar
-              isOpen={sidebarOpen}
-              onClose={() => setSidebarOpen(false)}
-              userData={userData}
-            />
+      <div
+        className={`transition-all duration-300 ease-in-out ${
+          sidebarOpen ? "w-40" : "w-0"
+        }`}
+      >
+        <Sidebar
+          isOpen={sidebarOpen}
+          onClose={() => setSidebarOpen(false)}
+          userData={userData}
+        />
+      </div>
 
       {/* Main konten */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col overflow-hidden overflow-x-auto ">
         <div className="flex-1 overflow-y-auto p-6">
           {/* Header */}
-          <div className="text-center mb-8">
-            <button
-              onClick={() => setSidebarOpen(true)}
-              className="lg:hidden absolute top-6 left-6 p-2 hover:bg-white/50 rounded-lg transition-colors"
-            >
-              <svg
-                className="w-6 h-6 text-gray-700"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+          <div className="mb-8">
+            {/* Container Button */}
+            <div className="flex items-center mb-6">
+              {/* Button */}
+              <button
+                onClick={handleToggleSidebar}
+                className="p-2 hover:bg-white/50 rounded-lg transition-colors z-10"
+                aria-label={
+                  sidebarOpen ? "Close sidebar menu" : "Open sidebar menu"
+                }
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-            </button>
+                {sidebarOpen ? (
+                  // Icon close
+                  <svg
+                    className="w-6 h-6 text-gray-700"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                ) : (
+                  // Icon open
+                  <svg
+                    className="w-6 h-6 text-gray-700"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M4 6h16M4 12h16M4 18h16"
+                    />
+                  </svg>
+                )}
+              </button>
 
-            <h1 className="text-3xl font-bold text-gray-800 mb-6">
-              Let's find your psychologist!
-            </h1>
+              {/* Title */}
+              <h1 className="flex-1 text-center text-2xl sm:text-3xl font-bold text-gray-800 px-2">
+                Let's find your psychologist!
+              </h1>
+              <div className="w-10" aria-hidden="true"></div>
+            </div>
 
             {/* Search Bar */}
             <div className="max-w-md mx-auto relative">
