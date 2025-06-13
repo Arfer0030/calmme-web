@@ -139,7 +139,7 @@ export default function HomeContent({
               </svg>
             </button>
             <div>
-              <h1 className="text-xl font-semibold text-gray-900">
+              <h1 className="text-2xl font-semibold text-gray-900">
                 {greeting},{" "}
                 {loadingUserData ? "Loading..." : userData?.username || "User"}!
               </h1>

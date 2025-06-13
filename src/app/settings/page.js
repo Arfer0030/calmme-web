@@ -3,14 +3,13 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../hooks/useAuth";
 import { authService } from "../../services/auth";
-import Sidebar from "../../components/Sidebar";
 import EditProfile from "../../components/settings/EditProfile";
-import TopBar from "../../components/TopBar";
 import Security from "../../components/settings/Security";
 import Notifications from "@/components/settings/Notifications";  
 import Membership from "@/components/settings/Membership";
 import Help from "@/components/settings/Help";
 import About from "@/components/settings/About"
+import DashboardLayout from "@/components/DashboardLayout";
 
 export default function SettingsPage() {
   const router = useRouter();
@@ -93,49 +92,45 @@ export default function SettingsPage() {
   if (!user) return null;
 
   return (
-    <div className="flex h-screen bg-gradient-to-b from-white to-purple-100 to-95% overflow-hidden">
-      {/* Sidebar */}
-      <Sidebar
-        isOpen={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
-        userData={userData}
-      />
-
-      <div className="flex-1 flex overflow-hidden ">
-        <div className="flex-1 flex flex-col overflow-hidden ">
-          <div className="backdrop-blur-sm border-gray-200 px-4 sm:px-6 py-4 bg-gradient-to-b from-purple-200">
-            <TopBar
-              onMenuClick={() => setSidebarOpen(true)}
-              onBackClick={handleBack}
-              title="Settings"
-            />
-            {/* Tab Navigasi */}
-            <div className="flex justify-center">
-              <div className="flex space-x-6 sm:space-x-8 md:space-x-12 overflow-x-auto scrollbar-hide">
-                {tabs.map((tab) => (
-                  <button
-                    key={tab}
-                    onClick={() => setActiveTab(tab)}
-                    className={`whitespace-nowrap pb-2 px-1 border-b-2 font-medium text-sm transition-colors ${
-                      activeTab === tab
-                        ? "border-h-ungu text-h-ungu"
-                        : "border-transparent text-b-ungu hover:text-gray-500 hover:border-gray-300"
-                    }`}
-                  >
-                    {tab}
-                  </button>
-                ))}
+    <DashboardLayout
+      title="Settings"
+      showBackButton
+      onBackClick={() => router.push("/home")}
+      backgroundColor="bg-gradient-to-b from-white to-purple-100 to-95% "
+      contentClassName="p-0"
+    >
+      <div className="flex h-screen overflow-hidden">
+        <div className="flex-1 flex overflow-hidden ">
+          <div className="flex-1 flex flex-col overflow-hidden ">
+            <div className="backdrop-blur-sm border-gray-200 px-4 sm:px-6 py-4">
+              {/* Tab Navigasi */}
+              <div className="flex justify-center">
+                <div className="flex space-x-6 sm:space-x-8 md:space-x-12 overflow-x-auto scrollbar-hide">
+                  {tabs.map((tab) => (
+                    <button
+                      key={tab}
+                      onClick={() => setActiveTab(tab)}
+                      className={`whitespace-nowrap pb-2 px-1 border-b-2 font-medium text-sm transition-colors ${
+                        activeTab === tab
+                          ? "border-h-ungu text-h-ungu"
+                          : "border-transparent text-b-ungu hover:text-gray-500 hover:border-gray-300"
+                      }`}
+                    >
+                      {tab}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
-          {/* Tab konten */}
-          <div className="flex-1 overflow-y-auto p-4 sm:p-6">
-            <div className="max-w-2xl lg:max-w-4xl xl:max-w-6xl mx-auto">
-              {renderTabContent()}
+            {/* Tab konten */}
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6">
+              <div className="max-w-2xl lg:max-w-4xl xl:max-w-6xl mx-auto">
+                {renderTabContent()}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </DashboardLayout>
   );
 }

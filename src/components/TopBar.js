@@ -7,29 +7,48 @@ export default function TopBar({
   showBackButton = true,
   showMenuButton = true,
   className = "",
+  sidebarOpen = false, // Tambah prop untuk status sidebar
 }) {
   return (
-    <div className={`flex items-center mb-8 ${className}`}>
-      {/* Button buka sidebar */}
+    <div className={`flex items-center ${className}`}>
+      {/* Button toggle sidebar - berubah icon berdasarkan status */}
       {showMenuButton && (
         <button
           onClick={onMenuClick}
-          className="p-2 hover:bg-white/50 rounded-lg transition-colors mr-4"
-          aria-label="Open sidebar menu"
+          className="p-2 hover:bg-white/50 rounded-lg transition-colors mr-4 z-10"
+          aria-label={sidebarOpen ? "Close sidebar menu" : "Open sidebar menu"}
         >
-          <svg
-            className="w-6 h-6 text-gray-700"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M4 6h16M4 12h16M4 18h16"
-            />
-          </svg>
+          {sidebarOpen ? (
+            // Icon X untuk close
+            <svg
+              className="w-6 h-6 text-gray-700"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          ) : (
+            // Icon burger untuk open
+            <svg
+              className="w-6 h-6 text-gray-700"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          )}
         </button>
       )}
 
@@ -37,7 +56,7 @@ export default function TopBar({
       {showBackButton && (
         <button
           onClick={onBackClick}
-          className="p-2 hover:bg-white/50 rounded-lg transition-colors mr-4"
+          className="p-2 hover:bg-white/50 rounded-lg transition-colors mr-4 z-10"
           aria-label="Go back"
         >
           <svg

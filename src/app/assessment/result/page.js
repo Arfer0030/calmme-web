@@ -92,7 +92,7 @@ export default function AssessmentResultPage() {
       />
 
       {/* Main Content */}
-      <div className="flex-1 p-6 overflow-x-auto">
+      <div className="flex-1 p-6">
         {/* Top Bar */}
         <TopBar
           onMenuClick={() => setSidebarOpen(true)}
