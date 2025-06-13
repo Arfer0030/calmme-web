@@ -37,6 +37,11 @@ export default function Sidebar({ isOpen, onClose, userData }) {
       label: "Payment History",
       icon: "/icons/ic_history.svg",
       path: "/payment-history",
+
+      id: "settings",
+      label: "Settings",
+      icon: "/icons/settings.svg",
+      path: "/settings",
     },
   ];
 
@@ -52,6 +57,9 @@ export default function Sidebar({ isOpen, onClose, userData }) {
         return true;
       }
       if (item.path === "/payment-history" && pathname === "/payment-history") {
+        return true;
+      }
+      if (item.path === "/settings" && pathname === "/settings") {
         return true;
       }
       return false;

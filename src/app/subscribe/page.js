@@ -1,11 +1,12 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useAuth } from "../../../hooks/useAuth";
-import { authService } from "../../../services/auth";
-import { subscriptionService } from "../../../services/subscription";
-import Sidebar from "../../../components/Sidebar";
+import { useAuth } from "@/hooks/useAuth";
+import { authService } from "@/services/auth";
+import { subscriptionService } from "@/services/subscription";
+import Sidebar from "@/components/Sidebar";
 import Image from "next/image";
+
 
 export default function PaymentPage() {
   const router = useRouter();
