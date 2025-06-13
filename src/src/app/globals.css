@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Style+Script&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-b-ungu: #933C9F;
+  --color-h-ungu: #7d2f8a;
+  --color-card-ungu: #DCCEF3;
+  --color-card-biru: #493EAC;
+  --color-sidebar: #CEBFE6;
+  --color-tab-ungu: #CEBFE6;
+  --font-monserrat: 'Montserrat', sans-serif;
+  --font-nunito: 'Nunito', sans-serif;
+  --font-script: 'Style Script', cursive;
+}
+
+body {
+  font-family: 'Montserrat', 'Nunito',sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;  
+  scrollbar-width: none;  
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.backdrop-blur-md {
+  backdrop-filter: blur(12px);
+}
+
+.backdrop-blur-sm {
+  backdrop-filter: blur(4px);
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+* {
+  transition: all 0.2s ease-in-out;
+}
+
+input:focus {
+  transform: translateY(-1px);
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
