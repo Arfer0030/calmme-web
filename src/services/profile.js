@@ -70,38 +70,6 @@ export const profileService = {
     }
   },
 
-  logoutUser: async () => {
-    try {
-      await signOut(auth);
-      return { success: true };
-    } catch (error) {
-      console.error("Error signing out:", error);
-      return { success: false, error: error.message };
-    }
-  },
-
-  syncEmailToFirestore: async (userId) => {
-    try {
-      const user = auth.currentUser;
-      if (!user) {
-        return { success: false, error: "User not authenticated" };
-      }
-
-      const currentAuthEmail = user.email;
-
-      await profileService.updateProfile(userId, {
-        email: currentAuthEmail,
-        emailVerified: user.emailVerified,
-        pendingEmail: null, 
-      });
-
-      return { success: true };
-    } catch (error) {
-      console.error("Error syncing email to Firestore:", error);
-      return { success: false, error: error.message };
-    }
-  },
-
   syncEmailToFirestore: async (userId) => {
     try {
       const user = auth.currentUser;
@@ -162,7 +130,6 @@ export const profileService = {
     }
   },
 
-  // Update password
   updatePassword: async (newPassword) => {
     try {
       const user = auth.currentUser;
