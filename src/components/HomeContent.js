@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { moodService } from "../services/mood";
 import { useAuth } from "../hooks/useAuth";
+import EmailVerificationDialog from "./EmailVerificationDialog";
 
 export default function HomeContent({
   userData,
@@ -13,15 +14,21 @@ export default function HomeContent({
 }) {
   const [greeting, setGreeting] = useState("");
   const [selectedMood, setSelectedMood] = useState(null);
+  const [showVerificationDialog, setShowVerificationDialog] = useState(false);
   const router = useRouter();
 
-  // Tambahkan di dalam component HomeContent
   const { user } = useAuth();
 
-  // Update handleMoodSelect function
+  useEffect(() => {
+    if (userData && !loadingUserData) {
+      if (!userData.emailVerified) {
+        setShowVerificationDialog(true);
+      }
+    }
+  }, [userData, loadingUserData]);
+
   const handleMoodSelect = async (mood) => {
     setSelectedMood(mood.id);
-
     if (user) {
       try {
         const result = await moodService.saveMood(
@@ -38,6 +45,11 @@ export default function HomeContent({
     }
   };
 
+  const handleVerificationSuccess = () => {
+    setShowVerificationDialog(false);
+    window.location.reload();
+  };
+
   useEffect(() => {
     const updateGreeting = () => {
       const hour = new Date().getHours();
@@ -51,7 +63,7 @@ export default function HomeContent({
     };
 
     updateGreeting();
-    const interval = setInterval(updateGreeting, 600000); // Update every hour
+    const interval = setInterval(updateGreeting, 600000);
 
     return () => clearInterval(interval);
   }, []);
@@ -116,185 +128,202 @@ export default function HomeContent({
   ];
 
   return (
-    <div className="flex-1 overflow-auto bg-gray-50">
-      {/* Header */}
-      <header className="bg-gradient-to-b from-purple-200 to-white shadow-sm px-6 py-4 pb-12">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <button
-              onClick={onMenuClick}
-              className="p-2 hover:bg-white/50 rounded-lg transition-colors mr-4 z-10"
-              aria-label={
-                sidebarOpen ? "Close sidebar menu" : "Open sidebar menu"
-              }
-            >
-              {sidebarOpen ? (
-                // Icon X untuk close
-                <svg
-                  className="w-6 h-6 text-gray-700"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              ) : (
-                // Icon burger untuk open
-                <svg
-                  className="w-6 h-6 text-gray-700"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                </svg>
-              )}
-            </button>
-            <div>
-              <h1 className="text-2xl font-semibold text-gray-900">
-                {greeting},{" "}
-                {loadingUserData ? "Loading..." : userData?.username || "User"}!
-              </h1>
-            </div>
-          </div>
-
-          <button
-            onClick={() => router.push("/settings")}
-            className="p-2 rounded-full hover:bg-gray-100 relative"
-          >
-            <Image
-              src="/icons/ic-notification.svg"
-              alt="Notifications"
-              width={25}
-              height={25}
-              className="object-contain"
-            />
-          </button>
-        </div>
-        {/* Pilihan mood */}
-        <section>
-          <h2 className="text-lg font-semibold text-gray-900 mt-8 mb-4 text-center">
-            How are you today?
-          </h2>
-          <div className="flex space-x-4 overflow-x-auto pb-4 scrollbar-hide px-6 py-6">
-            {moods.map((mood) => (
+    <>
+      <div className="flex-1 overflow-auto bg-gray-50">
+        {/* Header */}
+        <header className="bg-gradient-to-b from-purple-200 to-white shadow-sm px-6 py-4 pb-12">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
               <button
-                key={mood.id}
-                onClick={() => handleMoodSelect(mood)}
-                className={`flex-shrink-0 flex flex-col items-center space-y-2 p-4 rounded-2xl transition-all ${
-                  selectedMood === mood.id
-                    ? `${mood.color} ring-2 ring-b-ungu scale-105`
-                    : `${mood.color} hover:scale-105`
-                }`}
+                onClick={onMenuClick}
+                className="p-2 hover:bg-white/50 rounded-lg transition-colors mr-4 z-10"
+                aria-label={
+                  sidebarOpen ? "Close sidebar menu" : "Open sidebar menu"
+                }
               >
-                <div className="relative w-25 h-15">
-                  <Image
-                    src={mood.iconSrc}
-                    alt={mood.label}
-                    layout="fill"
-                    objectFit="contain"
-                  />
-                </div>
-                <span className="text-sm font-medium text-h-ungu capitalize">
-                  {mood.label}
-                </span>
+                {sidebarOpen ? (
+                  // icon close
+                  <svg
+                    className="w-6 h-6 text-gray-700"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                ) : (
+                  // icon open
+                  <svg
+                    className="w-6 h-6 text-gray-700"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M4 6h16M4 12h16M4 18h16"
+                    />
+                  </svg>
+                )}
               </button>
-            ))}
-          </div>
-        </section>
-      </header>
-
-      {/* Main content */}
-      <main className="p-6 space-y-8 bg-white mt-[-32px] rounded-tl-3xl rounded-tr-3xl shadow-lg">
-        {/* Bagian For you */}
-        <section>
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">For You</h2>
-          <div className="bg-gradient-to-bl from-purple-100 via-blue-100 to-yellow-100 rounded-2xl p-6 relative ">
-            <div className="relative z-10">
-              <div className="flex items-center space-x-2 mb-2">
-                <span className="text-xs font-bold px-2 py-1 rounded-full">
-                  GO PREMIUM
-                </span>
-                <span className="text-2xl">
-                  <Image
-                    src="/icons/ic_crown.png"
-                    alt="Basic Plan Icon"
-                    width={24}
-                    height={24}
-                  />
-                </span>
+              <div>
+                <h1 className="text-2xl font-semibold text-gray-900">
+                  {greeting},{" "}
+                  {loadingUserData
+                    ? "Loading..."
+                    : userData?.username || "User"}
+                  !
+                </h1>
               </div>
-              <h3 className="text-xl font-bold text-red-900 mb-4 flex flex-col">
-                <span>Upgrade to premium to get more profit</span>
-                <span>now !</span>
-              </h3>
-              <button
-                className="border px-4 py-2 rounded-full font-medium transition-colors"
-                onClick={() => router.push("/subscribe")}
-              >
-                Learn more →
-              </button>
             </div>
-            <div className="absolute right-10 -top-6">
+            <button
+              onClick={() => router.push("/settings")}
+              className="p-2 rounded-full hover:bg-gray-100 relative"
+            >
               <Image
-                src="/images/ct-consul.png"
-                alt="For You"
-                width={140}
-                height={130}
+                src="/icons/ic-notification.svg"
+                alt="Notifications"
+                width={25}
+                height={25}
+                className="object-contain"
               />
-            </div>
-          </div>
-        </section>
-
-        {/* Categories */}
-        <section>
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-900">Categories</h2>
-            <button className="text-purple-600 text-sm font-medium hover:text-purple-700">
-              See all
             </button>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 overflow-x-auto scrollbar-hide">
-            {categories.map((category) => (
-              <button
-                key={category.id}
-                onClick={() => router.push(category.path)}
-                className={`${category.color} rounded-2xl p-6 text-left hover:scale-105 transition-transform group`}
-              >
-                <div className="flex flex-col items-center space-y-4">
-                  <div className="w-20 h-20 flex items-center justify-center">
+
+          {/* Pilihan mood */}
+          <section>
+            <h2 className="text-lg font-semibold text-gray-900 mt-8 mb-4 text-center">
+              How are you today?
+            </h2>
+            <div className="flex space-x-4 overflow-x-auto pb-4 scrollbar-hide px-6 py-6">
+              {moods.map((mood) => (
+                <button
+                  key={mood.id}
+                  onClick={() => handleMoodSelect(mood)}
+                  className={`flex-shrink-0 flex flex-col items-center space-y-2 p-4 rounded-2xl transition-all ${
+                    selectedMood === mood.id
+                      ? `${mood.color} ring-2 ring-b-ungu scale-105`
+                      : `${mood.color} hover:scale-105`
+                  }`}
+                >
+                  <div className="relative w-25 h-15">
                     <Image
-                      src={category.iconSrc}
-                      alt={category.title}
-                      width={100}
-                      height={100}
-                      className="object-cover"
+                      src={mood.iconSrc}
+                      alt={mood.label}
+                      layout="fill"
+                      objectFit="contain"
                     />
                   </div>
-                  <div className="text-center">
-                    <h3 className="font-semibold text-gray-900 mb-1">
-                      {category.title}
-                    </h3>
-                    <p className="text-sm text-gray-600">
-                      {category.description}
-                    </p>
-                  </div>
+                  <span className="text-sm font-medium text-h-ungu capitalize">
+                    {mood.label}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </section>
+        </header>
+
+        {/* Main content */}
+        <main className="p-6 space-y-8 bg-white mt-[-32px] rounded-tl-3xl rounded-tr-3xl shadow-lg">
+          {/* Bagian For you */}
+          <section>
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">
+              For You
+            </h2>
+            <div className="bg-gradient-to-bl from-purple-100 via-blue-100 to-yellow-100 rounded-2xl p-6 relative">
+              <div className="relative z-10">
+                <div className="flex items-center space-x-2 mb-2">
+                  <span className="text-xs font-bold px-2 py-1 rounded-full">
+                    GO PREMIUM
+                  </span>
+                  <span className="text-2xl">
+                    <Image
+                      src="/icons/ic_crown.png"
+                      alt="Basic Plan Icon"
+                      width={24}
+                      height={24}
+                    />
+                  </span>
                 </div>
+                <h3 className="text-xl font-bold text-red-900 mb-4 flex flex-col">
+                  <span>Upgrade to premium to get more profit</span>
+                  <span>now !</span>
+                </h3>
+                <button
+                  className="border px-4 py-2 rounded-full font-medium transition-colors"
+                  onClick={() => router.push("/subscribe")}
+                >
+                  Learn more →
+                </button>
+              </div>
+              <div className="absolute right-10 -top-6">
+                <Image
+                  src="/images/ct-consul.png"
+                  alt="For You"
+                  width={140}
+                  height={130}
+                />
+              </div>
+            </div>
+          </section>
+
+          {/* Categories */}
+          <section>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold text-gray-900">
+                Categories
+              </h2>
+              <button className="text-purple-600 text-sm font-medium hover:text-purple-700">
+                See all
               </button>
-            ))}
-          </div>
-        </section>
-      </main>
-    </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 overflow-x-auto scrollbar-hide">
+              {categories.map((category) => (
+                <button
+                  key={category.id}
+                  onClick={() => router.push(category.path)}
+                  className={`${category.color} rounded-2xl p-6 text-left hover:scale-105 transition-transform group`}
+                >
+                  <div className="flex flex-col items-center space-y-4">
+                    <div className="w-20 h-20 flex items-center justify-center">
+                      <Image
+                        src={category.iconSrc}
+                        alt={category.title}
+                        width={100}
+                        height={100}
+                        className="object-cover"
+                      />
+                    </div>
+                    <div className="text-center">
+                      <h3 className="font-semibold text-gray-900 mb-1">
+                        {category.title}
+                      </h3>
+                      <p className="text-sm text-gray-600">
+                        {category.description}
+                      </p>
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </section>
+        </main>
+      </div>
+
+      {/* Email Verification Dialog */}
+      <EmailVerificationDialog
+        isOpen={showVerificationDialog}
+        onClose={() => {}}
+        userEmail={userData?.email || ""}
+        onVerificationSuccess={handleVerificationSuccess}
+      />
+    </>
   );
 }
