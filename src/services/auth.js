@@ -3,6 +3,8 @@ import {
   createUserWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  sendEmailVerification,
+  reload,
 } from "firebase/auth";
 import {
   doc,
@@ -12,6 +14,7 @@ import {
   where,
   collection,
   getDocs,
+  updateDoc,
   Timestamp,
 } from "firebase/firestore";
 import { auth, db } from "../lib/firebase";
@@ -26,6 +29,9 @@ export const authService = {
         email,
         password
       );
+
+      await reload(userCredential.user);
+
       return { success: true, user: userCredential.user };
     } catch (error) {
       return { success: false, error: error.message };
@@ -45,7 +51,7 @@ export const authService = {
     }
   },
 
-  // Register user baru
+  // Register user baru dengan email verification
   register: async (userData) => {
     try {
       // Cek username unik
@@ -63,7 +69,8 @@ export const authService = {
         userData.password
       );
 
-      // Simpan ke Firestore
+      await sendEmailVerification(userCredential.user);
+
       const userMap = {
         username: userData.username.toLowerCase(),
         email: userData.email,
@@ -73,14 +80,72 @@ export const authService = {
         subscriptionStatus: "inactive",
         subscriptionStartDate: "",
         subscriptionEndDate: "",
-        emailVerified: false,
+        emailVerified: false, 
         profilePicture: "",
         createdAt: Timestamp.now(),
         updatedAt: Timestamp.now(),
       };
 
       await setDoc(doc(db, "users", userCredential.user.uid), userMap);
-      return { success: true, user: userCredential.user };
+
+      return {
+        success: true,
+        user: userCredential.user,
+        message:
+          "Account created successfully! Please check your email for verification.",
+      };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  },
+
+  // Check email verification status
+  checkEmailVerificationStatus: async () => {
+    try {
+      const user = auth.currentUser;
+      if (!user) return { success: false, error: "No user signed in" };
+
+      await reload(user);
+
+      if (user.emailVerified) {
+        // Update status di Firestore
+        await authService.updateEmailVerificationStatus(user.uid, true);
+        return { success: true, verified: true };
+      }
+
+      return { success: true, verified: false };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  },
+
+  // Update email verification status
+  updateEmailVerificationStatus: async (userId, isVerified) => {
+    try {
+      await updateDoc(doc(db, "users", userId), {
+        emailVerified: isVerified,
+        updatedAt: Timestamp.now(),
+      });
+      return { success: true };
+    } catch (error) {
+      console.error("Error updating email verification status:", error);
+      return { success: false, error: error.message };
+    }
+  },
+
+  // Resend email verification
+  resendEmailVerification: async () => {
+    try {
+      const user = auth.currentUser;
+      if (!user) {
+        return { success: false, error: "No user signed in" };
+      }
+
+      await sendEmailVerification(user);
+      return {
+        success: true,
+        message: "Verification email sent successfully!",
+      };
     } catch (error) {
       return { success: false, error: error.message };
     }
@@ -140,12 +205,8 @@ export const authService = {
       if (userDoc.exists()) {
         const userData = userDoc.data();
 
-        // Check if email in Firestore matches Auth email
         if (userData.email !== user.email) {
-          // Sync email if mismatch
           await profileService.syncEmailToFirestore(user.uid);
-
-          // Get updated data
           const updatedDoc = await getDoc(doc(db, "users", user.uid));
           return updatedDoc.exists() ? updatedDoc.data() : null;
         }
