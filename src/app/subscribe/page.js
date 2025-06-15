@@ -302,7 +302,7 @@ export default function SubscribePage() {
                     Rp 275.000,00 / month
                   </div>
                   <p className="text-sm text-cyan-700">
-                    Get 1 year of unlimited consultation access.
+                    Get 1 month of unlimited consultation access.
                   </p>
                 </div>
               </div>
