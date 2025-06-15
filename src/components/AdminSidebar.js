@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import { authService } from "../services/auth";
+import { authService } from "@/services/auth";
 import Image from "next/image";
 
 export default function AdminSidebar({ isOpen, onClose, userData }) {
@@ -72,13 +72,16 @@ export default function AdminSidebar({ isOpen, onClose, userData }) {
     <>
       {/* Overlay */}
       {isOpen && (
-        <div className="fixed inset-0 z-40 lg:hidden" onClick={onClose} />
+        <div
+          className="fixed inset-0 z-40 bg-black opacity-30 md:hidden"
+          onClick={onClose}
+        />
       )}
 
-      {/* Sidebar */}
+      {/* Sideba */}
       <div
-        className={`fixed lg:relative inset-y-0 left-0 z-50 w-60 bg-white shadow-lg transform ${
-          isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+        className={`fixed inset-y-0 left-0 z-50 w-60 bg-white shadow-lg transform ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300 ease-in-out flex flex-col`}
       >
         {/* Header */}
@@ -91,24 +94,6 @@ export default function AdminSidebar({ isOpen, onClose, userData }) {
               Admin
             </span>
           </div>
-          <button
-            onClick={onClose}
-            className="lg:hidden p-2 rounded-md hover:bg-gray-100"
-          >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
         </div>
 
         {/* Navigasi */}
@@ -118,7 +103,7 @@ export default function AdminSidebar({ isOpen, onClose, userData }) {
               key={item.id}
               onClick={() => {
                 router.push(item.path);
-                if (typeof onClose === "function" && window.innerWidth < 1024) {
+                if (typeof onClose === "function") {
                   onClose();
                 }
               }}

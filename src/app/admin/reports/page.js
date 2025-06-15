@@ -50,7 +50,7 @@ export default function ReportsPage() {
       </div>
 
       {/* Filter Tab */}
-      <div className="mb-6">
+      <div className="mb-6 overflow-y-scroll scrollbar-hide">
         <div className="border-b border-gray-200">
           <nav className="-mb-px flex space-x-8">
             {["all", ...reportTypes.map((t) => t.id)].map((filter) => (
