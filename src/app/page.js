@@ -13,10 +13,8 @@ export default function HomePage() {
       if (!loading) {
         if (user) {
           try {
-            // Fetch user data to check role
             const userData = await authService.getCurrentUserData();
 
-            // Redirect based on role
             if (userData?.role === "admin") {
               router.replace("/admin");
             } else {
