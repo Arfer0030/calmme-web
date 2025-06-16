@@ -1,12 +1,12 @@
-##**CalmMe – Mental Health Web Platform**
+## **CalmMe – Mental Health Web Platform**
 
-##Overview
+## Overview
 CalmMe Web is a complementary platform to the CalmMe Android app, developed using Next.js and Tailwind CSS. It supports multiple roles — User, Psychologist, and Admin — offering secure access to mental health tools and consultation services online.
 
-##Purpose
+## Purpose
 Designed to help users with mental health concerns access support digitally, especially those hesitant to meet psychologists face-to-face.
 
-##Features
+## Features
 - Role-Based Login – Supports authentication for Users, Psychologists, and Admins.
 - User Dashboard – Personalized dashboard with access to premium tools.
 - Online Consultation – Schedule appointments and consult with psychologists.
@@ -14,7 +14,7 @@ Designed to help users with mental health concerns access support digitally, esp
 - Mood Tracking – Visual history of daily moods submitted by the user.
 - Subscription Management – Pay and unlock premium access (manual/placeholder implementation).
 
-##Tech Stack
+## Tech Stack
 - Next.js – React-based web framework for SSR and routing.
 - Tailwind CSS – Utility-first CSS framework for responsive design.
 - Firebase – For authentication and data storage.
@@ -36,7 +36,7 @@ pnpm dev
 bun dev
 ```
 
-##Development Status
+## Development Status
 **Completed
 Open to future improvements **
 
