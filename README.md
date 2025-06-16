@@ -37,6 +37,6 @@ bun dev
 ```
 
 ## Development Status
-**Completed
-Open to future improvements **
+**Completed**
+**Open to future improvements**
 
