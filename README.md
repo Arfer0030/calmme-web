@@ -1,4 +1,26 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## **CalmMe – Mental Health Web Platform**
+
+## Overview
+CalmMe Web is a complementary platform to the CalmMe Android app, developed using Next.js and Tailwind CSS. It supports multiple roles — User, Psychologist, and Admin — offering secure access to mental health tools and consultation services online.
+
+## Purpose
+Designed to help users with mental health concerns access support digitally, especially those hesitant to meet psychologists face-to-face.
+
+## Features
+- Role-Based Login – Supports authentication for Users, Psychologists, and Admins.
+- User Dashboard – Personalized dashboard with access to premium tools.
+- Online Consultation – Schedule appointments and consult with psychologists.
+- Assessment Tools – Self-assessment tests to identify stress and mood levels.
+- Mood Tracking – Visual history of daily moods submitted by the user.
+- Subscription Management – Pay and unlock premium access (manual/placeholder implementation).
+
+## Tech Stack
+- Next.js – React-based web framework for SSR and routing.
+- Tailwind CSS – Utility-first CSS framework for responsive design.
+- Firebase – For authentication and data storage.
+- Client-Side Fetching – AJAX/Fetch API used for data handling (no external APIs).
+
+
 
 ## Getting Started
 
@@ -14,23 +36,7 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Development Status
+**Completed**
+**Open to future improvements**
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
